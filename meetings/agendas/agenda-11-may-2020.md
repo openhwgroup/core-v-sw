@@ -1,6 +1,6 @@
 # OpenHW Software Task Group Meeting Agenda
 
-**Date:** Monday 8 May 2020
+**Date:** Monday 11 May 2020
 
 **Time:**
 
@@ -56,4 +56,3 @@ It is proposed that the group meet monthly at 07:00 Pacific Time on the second M
 
 
 Jeremy Bennett
-Chair
