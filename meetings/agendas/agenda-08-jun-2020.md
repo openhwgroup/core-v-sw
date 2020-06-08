@@ -24,9 +24,9 @@
 
 1. Review of actions
 
-- **Jeremy Bennett (lead), Yunhai Syh, Jim Parisien:** Prepare candidate charter in light of comments from the meeting for review on the mailing list and ratification at the next meeting.
+  - **Jeremy Bennett (lead), Yunhai Syh, Jim Parisien:** Prepare candidate charter in light of comments from the meeting for review on the mailing list and ratification at the next meeting.
 
-- **Craig Blackmore:** Carry out a detailed analysis of the work required to migrate the tool chains to the current upstream baseline and then submit the changes for incorporation.
+  - **Craig Blackmore:** Carry out a detailed analysis of the work required to migrate the tool chains to the current upstream baseline and then submit the changes for incorporation.
 
 2. Charter
 
@@ -48,12 +48,12 @@ Craig Blackmore will give an update.  **Note.** The need for urgent support of v
 
 The group meets monthly at 07:00 Pacific Time on the second Monday of the month.
 
-- 13 Jul 2020
-- 10 Aug 2020
-- 14 Sep 2020
-- 12 Oct 2020
-- 09 Nov 2020
-- 14 Dec 2020
+  - 13 Jul 2020
+  - 10 Aug 2020
+  - 14 Sep 2020
+  - 12 Oct 2020
+  - 09 Nov 2020
+  - 14 Dec 2020
 
 
 Jeremy Bennett
