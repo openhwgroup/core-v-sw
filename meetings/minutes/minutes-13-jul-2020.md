@@ -12,6 +12,7 @@ obtained. Pull requests to amend the attendee list welcome.
 - **Alibaba:** Yunhai Syh (vice-chair)
 - **Eclipse project:** Alexander Fedorov
 - **Publitek:** Andrea Barnard
+- **Thales:** Zbigniew Chamski
 
 ## Summary of actions
 
