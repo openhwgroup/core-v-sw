@@ -1,7 +1,6 @@
-`toolchain`: Basic scripts for building RISC-V compiler toolchains
-=============================
+# `toolchain`: Basic scripts for building RISC-V compiler toolchains
 
-# Overview
+## Overview
 
 This directory contains basic scripts for building local instances of CORE-V toolchains.
 The scripts provide the means of fetching the source code and building the executables
@@ -23,9 +22,9 @@ Several extensions are envisioned:
 * Support for Linux-based target environments
 * Addition of full-featured C library implementations
 
-# Getting started
+## Getting started
 
-Once the prerequisites (see below) are satisfied, you can fetch and build the
+Once the prerequisites (see [below](#Prerequisites)) are satisfied, you can fetch and build the
 latest supported upstream GCC toolchain for bare-metal 32-bit and 64-bit applications in just three steps:
 
     # 1. Select an installation location for the toolchain (e.g., the path in
@@ -39,7 +38,7 @@ latest supported upstream GCC toolchain for bare-metal 32-bit and 64-bit applica
       $INSTALL_DIR.)
     sh build-toolchain.sh $INSTALL_DIR
 
-#  File and directory structure
+## File and directory structure
 
 The base infrastructure for building compilation toolchains consists of two scripts
 and a directory holding configuration files:
@@ -63,7 +62,7 @@ This directory structure was chosen to keep the source and build directories
 local to the user's workspace while supporting systematic out-of-source-tree
 building of toolchain components.
 
-# Prerequisites
+## Prerequisites
 
 **Disk space:** Approximately 7 GB of disk space are needed to build and install a bare-metal toolchain
 from source code:
@@ -85,7 +84,7 @@ On macOS, you can use [Homebrew](http://brew.sh) to install the dependencies:
 
     $ brew install gawk gnu-sed gmp mpfr libmpc isl zlib
 
-# Building a bare-metal toolchain (Newlib-based)
+## Building a bare-metal toolchain (Newlib-based)
 
 In order to build a toolchain you need to select a _toolchain configuration_ and
 an _installation location_ (an "install prefix"):
@@ -126,15 +125,15 @@ To build the toolchain from the retrieved source baseline, use
 
 The `build-toolchain.sh` script incorporates fallbacks for several commonly encountered configuration and
 build issues. However, it is not meant to auto-detect major reconfigurations of source
-code such as a change of baseline configuration.  _If/when the source
-configuration was changed, please use the `-f` (or `--force`)
+code such as a change of baseline configuration.  _Whenever the source
+configuration is changed, please use the `-f` (or `--force`)
 option to forcibly rebuild the entire toolchain_:
 
     sh build-toolchain.sh -f CONFIG_NAME INSTALL_DIR
     # E.g.,
     # sh build-toolchain.sh -f gcc-10.2.0-baremetal $RISCV/toolchain
 
-### Defining new configurations
+## Defining new configurations
 
 Users involved with toolchain validation and development may be interested in
 creating new configurations that cater for specific needs:
@@ -151,9 +150,11 @@ adjusting the values of per-component variables.  Taking `GCC` as an example:
  * `GCC_DIR` defines the location of GCC source code.
  * `GCC_REPO` selects the Git repository to fetch GCC code from. 
  * `GCC_COMMIT` identifies the revision of source code to use: a specific commit,
-   targ, or branch[BR]**NOTE:** If you set `GCC_COMMIT` to the name of a branch, the
+   targ, or branch. \
+   _**NOTE:** If you set `GCC_COMMIT` to the name of a branch, the
    `get-toolchain.sh` will update the local repository to the tip of the remote
-   brach at every invocation.
- * `GCC_CONFIGURE_OPTS` is the list of options to pass to the configure script.
-   [BR]**NOTE:** Since `GCC_CONFIGURE_OPTS` is a Bourne shell variable, any double-quotes in
-   the option list must be duly escaped to be correctly handled by the shell.
+   brach at every invocation._
+
+ * `GCC_CONFIGURE_OPTS` is the list of options to pass to the configure script. \
+   _**NOTE:** Since `GCC_CONFIGURE_OPTS` is a Bourne shell variable, any double-quotes in
+   the option list must be duly escaped to be correctly handled by the shell._
