@@ -5,11 +5,12 @@
 This directory contains basic scripts for building local instances of CORE-V toolchains.
 The scripts provide the means of fetching the source code and building the executables
 and libraries for well-defined toolchain configurations.  The intention is to
-simplify the processs of building such toolchains and make is as "push-button"
+simplify the processs of building such toolchains and make it as "push-button"
 (and as accessible to CORE-V users) as reasonably possible.
 
 Currently, the scripts support only 'bare metal' toolchain configurations
-intended for hardware verification.  These configurations consist of:
+intended for hardware verification of 32- and 64-bit RISC-V targets.
+These configurations are deliberately lightweight and consist of:
 
 * `binutils`: assembler, linker, and object file utilities
 * `GCC`: the GNU GCC compiler configured for C only
@@ -17,7 +18,7 @@ intended for hardware verification.  These configurations consist of:
 
 Several extensions are envisioned:
 
-* Explicit selection of GDB versions
+* Explicit selection of GDB version
 * Addition of LLVM/Clang compilers
 * Support for Linux-based target environments
 * Addition of full-featured C library implementations
@@ -27,15 +28,13 @@ Several extensions are envisioned:
 Once the prerequisites (see [below](#Prerequisites)) are satisfied, you can fetch and build the
 latest supported upstream GCC toolchain for bare-metal 32-bit and 64-bit applications in just three steps:
 
-    # 1. Select an installation location for the toolchain (e.g., the path in
-      $RISCV).
+    # 1. Select an installation location for the toolchain (e.g., the 'toolchain' subdirectory of $RISCV).
     INSTALL_DIR=$RISCV/toolchain
     
     # 2. Fetch the source code of the toolchain (assumes Internet access.)
     sh get-toolchain.sh
     
-    # 3. Build and install the toolchain (requires write+create permissions for
-      $INSTALL_DIR.)
+    # 3. Build and install the toolchain (requires write+create permissions for $INSTALL_DIR.)
     sh build-toolchain.sh $INSTALL_DIR
 
 ## File and directory structure
@@ -43,16 +42,16 @@ latest supported upstream GCC toolchain for bare-metal 32-bit and 64-bit applica
 The base infrastructure for building compilation toolchains consists of two scripts
 and a directory holding configuration files:
 
-* `get-toolchain.sh`: script in charge of obtaining the source code and
-extracting the correct code baselines
-* `build-toolchain.sh`: script in charge of building and installing the
+ * `get-toolchain.sh`: script in charge of obtaining the source code and
+extracting the correct code baselines.
+ * `build-toolchain.sh`: script in charge of building and installing the
 different toolchain components in suitable order.
-* `config/`: directory containing the configuration files for the various configurations.
+ * `config/`: directory containing the configuration files for the various configurations.
 
 In the process of building the toolchain, two new directory trees are created
 under the current working directory:
 
- * `src/`: source code is fetched and checked out into subdirectories of `src` in
+ * `src/`: Source code is fetched and checked out into subdirectories of `src` in
  the current working directory.
 
  * `build/`: The building of the various components of the toolchain occurs in
@@ -150,10 +149,10 @@ adjusting the values of per-component variables.  Taking `GCC` as an example:
  * `GCC_DIR` defines the location of GCC source code.
  * `GCC_REPO` selects the Git repository to fetch GCC code from. 
  * `GCC_COMMIT` identifies the revision of source code to use: a specific commit,
-   targ, or branch. \
+   tag, or branch. \
    _**NOTE:** If you set `GCC_COMMIT` to the name of a branch, the
    `get-toolchain.sh` will update the local repository to the tip of the remote
-   brach at every invocation._
+   branch at every invocation._
 
  * `GCC_CONFIGURE_OPTS` is the list of options to pass to the configure script. \
    _**NOTE:** Since `GCC_CONFIGURE_OPTS` is a Bourne shell variable, any double-quotes in
