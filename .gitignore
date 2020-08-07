@@ -2,3 +2,6 @@
 *.pdf
 # Ignore editor backup files
 *~
+# Ignore the subdirectories in toolchain/src and toolchain/build
+toolchain/src
+toolchain/build
