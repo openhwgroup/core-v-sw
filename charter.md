@@ -6,11 +6,12 @@ Draft of version 1 for review
 
 ##  Responsibilities
 
-The software task group is responsible for the following parts of the OpenHW Group ecosystem
+The software task group is responsible for the following parts of the OpenHW Group ecosystem.  This includes direct support for the CORE-V instruction set extensions and a process to support users' custom instruction set extensions.
 
 - Compiler tool chains (GNU, LLVM, proprietary) and Operating systems (RTOS, *nix, *bsd)
+  - the compiler tool chain includes the assembler, linker, debugger and libraries as well as the compiler.
 - Processor and platform models (ISS, cycle accurate, QEMU, OVPSim)
-- IDEs (Eclipse family, PlatformIO, proprietary) and support tools
+- IDEs (Eclipse family, PlatformIO, proprietary), their integration with the debug environment and support tools
 - Benchmarking (specifically including Embench)
 - Demonstration applications, both bare metal and for specific operating systems.
 - Support of the software ecosystem for the two OpenHW Group reference platforms, one MCU class, one APU class.
@@ -29,9 +30,9 @@ We expect the work to be achieved in two ways.
 - Contributions in kind from member companies.
 - Commercial development driven by CORE-V users.
 
-The work will need to be carried out by the wider OpenHW community and others.  The role of the Software Task Group is the be "shepherd" of this activity.
+The work will need to be carried out by the wider OpenHW community and others.  The role of the Software Task Group is to be the "shepherd" of this activity.
 
-Because this is a very large task, the Software Task Group will need to set priorities, with early selection of the tools to be supported.
+**Note.** Because this is a very large task, the Software Task Group will need to set priorities, with early selection of the software to be supported first.
 
 ## How we measure progress
 
