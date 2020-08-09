@@ -2,7 +2,8 @@
 
 ## Ratification status
 
-Draft of version 1 for review
+Version 1: Ratified by the Software TG 13 July 2020, pending
+confirmation by ballot of the TWG.
 
 ##  Responsibilities
 
