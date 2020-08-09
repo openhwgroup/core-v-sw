@@ -8,7 +8,9 @@ The [Open Hardware Group website](https://www.openhwgroup.org/) gives an overvie
 
 ### About the Software Task Group
 
-Our work is governed by our [Charter](charter.md).  This is currently in draft, pending ratification.
+Our work is governed by our [Charter](charter.md).  This is has been ratified
+by the Software TG, and is awaiting formal confirmation by ballot of the
+OpenHW Group membership.
 
 ## Structure of the repository
 
