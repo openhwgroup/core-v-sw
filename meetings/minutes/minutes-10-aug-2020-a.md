@@ -8,9 +8,9 @@ See separate [attendance register](https://github.com/openhwgroup/core-v-docs/bl
 
 ## Summary of actions
 
-**Jeremy Bennett:** Introduce the Embecosm team to Zbigniew Chamski
-**Jeremy Bennett:** Request limitations of software support to be added to the next TWG meeting agenda.
-**Craig Blackmore:** Produce definitive list of opcodes which are problem and share with the Cores TG.
+- **Jeremy Bennett:** Introduce the Embecosm team to Zbigniew Chamski
+- **Jeremy Bennett:** Request limitations of software support to be added to the next TWG meeting agenda.
+- **Craig Blackmore:** Produce definitive list of opcodes which are problem and share with the Cores TG.
 
 # Meeting topics
 
