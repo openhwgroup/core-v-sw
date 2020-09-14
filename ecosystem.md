@@ -1,4 +1,4 @@
-# The CORE-V Softare Ecosystem
+# The CORE-V Software Ecosystem
 
 This page lists all the providers of software for CORE-V. It includes
 providers of both proprietary and open source software.
