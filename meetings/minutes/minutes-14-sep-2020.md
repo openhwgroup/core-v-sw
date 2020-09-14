@@ -51,7 +51,7 @@ Frédéric Desbiens and Alexander Fedorov gave a preview of their talk at OSDFor
 
 - Question (Mike Thompson): What tool chain should be used for CV32E40P RTL sign-off, which has all PULP features disabled.
 
-  - Answer: Use FSF upstream stable (GCC 9.2.0, binutils 2.35, GDB 9.2, newlib 3.3.0).
+  - Answer: Use FSF upstream stable (GCC 10.2, binutils 2.35, GDB 9.2, newlib 3.3.0).
 
 **Action:** Jeremy Bennett to submit preliminary project proposal for GNU Tools development to TWG meeting on 28 September 2020.
 
