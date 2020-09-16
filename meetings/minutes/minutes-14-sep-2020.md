@@ -34,7 +34,10 @@ See separate [attendance register](https://github.com/openhwgroup/core-v-docs/bl
 
 ## Open source Eclipse development tools
 
-Frédéric Desbiens and Alexander Fedorov gave a preview of their talk at OSDForum on 15 September 2020.
+Frédéric Desbiens and Alexander Fedorov gave a preview of their talk at OSDForum on 15 September 2020. These are the slide decks.
+
+- [Eclipse IoT and Eclipse Edge Native Overview](../meeting-materials/2020.07 - Eclipse IoT and Eclipse Edge Native Overview-14-sep-2020.pdf)
+- [Being Productive with Open Source Eclipse Development Tools](../meeting-materials/2020.09 - OSDForum - Being Productive with Open Source Eclipse Development Tools-14-sep-2020.pdf)
 
 ## GNU tool chain update
 
