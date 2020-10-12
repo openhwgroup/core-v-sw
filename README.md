@@ -3,7 +3,9 @@
 This is the main repository for the [OpenHW
 Group](https://www.openhwgroup.org/) Software Task Group. Our work is governed by our [Charter](charter.md).
 
-The #1 goal in our charter is to create a thriving commercial ecosystem for CORE-V software tools, models and operating systems, both open source and proprietary. We thus provide our [list of CORE-V software providers](ecosystem/READNE.md). If your company is missing and you think you should be there, please submit a pull request with your details added.
+## Commercial ecosystem for CORE-V software
+
+The #1 goal in our charter is to create a thriving commercial ecosystem for CORE-V software tools, models and operating systems, both open source and proprietary. We thus provide our [list of CORE-V software providers](ecosystem/README.md). If your company is missing and you think you should be there, please submit a pull request with your details added.
 
 ## Contributing
 

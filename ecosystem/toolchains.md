@@ -2,9 +2,9 @@
 
 | Supplier | License | Description |
 |:-------- |:-------:|:----------- |
-| Embecosm | Open Source | GNU tools |
-| | Open source | Clang/LLVM tools |
-| Thales | Open Source | GNU tools |
+| [Embecosm](embecosm.md) | Open Source | [GNU tools](embecosm.md#core-v-gnu-tool-chains-and-services) |
+| | Open source | [Clang/LLVM tools](embecosm.md#core-v-clangllvm-tool-chains-and-services) |
+| [Thales](thales.md) | Open Source | [GNU tools](thales.md#gnu-tool-chains) |
 
 ## GNU tool chain open source components
 
