@@ -1,22 +1,11 @@
 # Open Hardware Group Software Task Group
 
-This is the main repository for the OpenHW Group Software Task Group.
+This is the main repository for the [OpenHW
+Group](https://www.openhwgroup.org/) Software Task Group. Our work is governed by our [Charter](charter.md).
 
-## About the Open Hardware Group
+## Commercial ecosystem for CORE-V software
 
-The [Open Hardware Group website](https://www.openhwgroup.org/) gives an overview of the project: who we are and what we are doing.
-
-### About the Software Task Group
-
-Our work is governed by our [Charter](charter.md).  This is has been ratified
-by the Software TG, and is awaiting formal confirmation by ballot of the
-OpenHW Group membership.
-
-## Structure of the repository
-
-At the top level is this [README](README.md) and our [Charter](charter.md).
-
-The [meetings](meetings) directory contains agendas and minutes of meetings.
+The #1 goal in our charter is to create a thriving commercial ecosystem for CORE-V software tools, models and operating systems, both open source and proprietary. We thus provide our [list of CORE-V software providers](ecosystem/README.md). If your company is missing and you think you should be there, please submit a pull request with your details added.
 
 ## Contributing
 
