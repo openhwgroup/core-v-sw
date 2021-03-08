@@ -11,15 +11,20 @@
     * Add patterns for MAC instructions (merged)
     * Add Load & Store instructions to integrated assembler (merged)
     * Add ALU instructions to integrated assembler (merged)
-    * Add patterns for ALU instructions (under review)
+    * Add patterns for Load & Store instructions (merged)
+    * Add patterns for ALU instructions (merged)
+    * Completed porting implementations of extensions from [ekut-es/pulp-llvm]
     * Add MAC builtins (WIP)
     * Add HWLP memcpy optimization (needs testing)
+
+[ekut-es/pulp-llvm]: https://github.com/ekut-es/pulp-llvm
+[openhwgroup/corev-llvm-project]: https://github.com/openhwgroup/corev-llvm-project
 
 ### Test results (LLVM)
 
 | Category    | This Month | Last Month | Delta |
 | -----------:| ----------:| ----------:| -----:|
-| PASS        | 34266      | 34229      | +37   |
+| PASS        | 34268      | 34229      | +39   |
 | FAIL        | 0          | 0          | 0     |
 | XPASS       | -          | -          | -     |
 | XFAIL       | 151        | 151        | 0     |
@@ -32,9 +37,8 @@
 
 ### Planned activities for coming month
 
-* Port implementations from
-  [ekut-es/pulp-llvm](https://github.com/ekut-es/pulp-llvm) to
-  [openhwgroup/corev-llvm-project](https://github.com/openhwgroup/corev-llvm-project)
+* Port builtins from [ekut-es/pulp-llvm]
+* Potentially port HWLP code generation from [ekut-es/pulp-llvm]
 
 ### Risk Register
 
