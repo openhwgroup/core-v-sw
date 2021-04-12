@@ -5,7 +5,12 @@
 ### Key activities
 
 * CVA6
-    * None
+  * review of directions
+    * focus: base RV32gc/RV64gc, then extensions B, V (and later K)
+    * objective: single multitarget toolchain for CV64A6 and CV32A6
+    * outlook: use Linux as additional means of functional validation
+  * current activity
+    * LLVM 12.0.0-rc1 (review of status for bugs identified in v10/v11 using `riscv-dv`)
 
 * CV32E40P
     * Add HWLP code generation (WIP, waiting on review)
