@@ -5,7 +5,7 @@
 ### Key activities
 
 * CVA6
-  * None
+  * Check status of Clang+LLVM+LLD wrt. core-v-verif tests; key issues: floating-point, out-of-bound relocations
 
 * CV32E40P
   * Port hardware loop code generation
@@ -25,7 +25,9 @@
 ### Planned activities for coming month
 
 * CVA6:
-  * None
+  * Finalise LLVM / core-v-verif evaluation
+  * Automate builds of the toolchain (Thales, externally accessible)
+  * Basic benchmarking (performance, code size)
 
 * CV32E40P:
   * Do automated builds of the toolchain (Embecosm)
