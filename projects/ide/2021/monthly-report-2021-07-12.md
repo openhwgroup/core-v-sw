@@ -1,4 +1,4 @@
-# Software TG monthly meeting - CORE-V IDE (June 2021)
+# Software TG monthly meeting - CORE-V IDE (July 2021)
 
 ## Overview
 
