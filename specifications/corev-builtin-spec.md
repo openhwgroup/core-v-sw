@@ -3623,7 +3623,7 @@ or case b)
         cv.extractr  rD,rs1,rs2
 ```
 
-#### `uint32_t __builtin_riscv_cv_bitmanip_cv.extractu (uint32_t, uint8_t, uint8_t)`
+#### `uint32_t __builtin_riscv_cv_bitmanip_extractu (uint32_t i, uint16_t range)`
 
 Case a) range is a constant
 - result: `rD`
@@ -3647,7 +3647,7 @@ or case b)
         cv.extractur  rD,rs1,rs2
 ```
 
-#### `uint32_t __builtin_riscv_cv_bitmanip_cv.insert(uint32_t i, uint16_t range, uint32_t  k)`
+#### `uint32_t __builtin_riscv_cv_bitmanip_insert(uint32_t i, uint16_t range, uint32_t  k)`
 
 Case a) range is a constant and `(range[9:5] + range [4:0]) <= 32` (TBC)
 - result, k: `rD`
@@ -3671,7 +3671,7 @@ or case b)
         cv.insertr  rD,rs1,rs2
 ```
 
-#### `uint32_t __builtin_riscv_cv_bitmanip_cv.bclr (uint32_t i, uint16_t range, uint16_t k)`
+#### `uint32_t __builtin_riscv_cv_bitmanip_bclr (uint32_t i, uint16_t range, uint16_t k)`
 
 Case a) range is a constant
 - result, k: `rD`
@@ -3695,7 +3695,7 @@ or case b)
         cv.bclrr  rD,rs1,rs2
 ```
 
-#### `uint32_t __builtin_riscv_cv_bitmanip_cv.bset (uint32_t i, uint16_t range, uint16_t k)`
+#### `uint32_t __builtin_riscv_cv_bitmanip_bset (uint32_t i, uint16_t range, uint16_t k)`
 
 Case a) range is a constant
 - result, k: `rD`
@@ -3719,7 +3719,7 @@ or case b)
         cv.bsetr  rD,rs1,rs2
 ```
 
-#### `uint8_t __builtin_riscv_cv_bitmanip_cv.ff1 (uint32_t i)`
+#### `uint8_t __builtin_riscv_cv_bitmanip_ff1 (uint32_t i)`
 
 - result: `rD`
 - i: `rs1`
@@ -3730,7 +3730,7 @@ _Generated assembler:_
         cv.ff1  rD,rs1
 ```
 
-#### `uint8_t __builtin_riscv_cv_bitmanip_cv.fl1 (uint32_t i)`
+#### `uint8_t __builtin_riscv_cv_bitmanip_fl1 (uint32_t i)`
 
 - result: `rD`
 - i: `rs1`
@@ -3741,7 +3741,7 @@ _Generated assembler:_
         cv.fl1  rD,rs1
 ```
 
-#### `uint8_t __builtin_riscv_cv_bitmanip_cv.clb (uint32_t i)`
+#### `uint8_t __builtin_riscv_cv_bitmanip_clb (uint32_t i)`
 
 - result: `rD`
 - i: `rs1`
@@ -3752,7 +3752,7 @@ _Generated assembler:_
         cv.clb  rD,rs1
 ```
 
-#### `uint8_t __builtin_riscv_cv_bitmanip_cv.cnt (uint32_t i)`
+#### `uint8_t __builtin_riscv_cv_bitmanip_cnt (uint32_t i)`
 
 - result: `rD`
 - i: `rs1`
@@ -3763,7 +3763,7 @@ _Generated assembler:_
         cv.cnt  rD,rs1
 ```
 
-#### `uint32_t __builtin_riscv_cv_bitmanip_cv.ror (uint32_t i, uint32_t j)`
+#### `uint32_t __builtin_riscv_cv_bitmanip_ror (uint32_t i, uint32_t j)`
 
 - result: `rD`
 - i: `rs1`
@@ -3775,7 +3775,7 @@ _Generated assembler:_
         cv.ror  rD,rs1,rs2
 ```
 
-#### `uint32_t __builtin_riscv_cv_bitmanip_cv.bitrev (uint32_t i, uint8_t pts, uint8_t radix)`
+#### `uint32_t __builtin_riscv_cv_bitmanip_bitrev (uint32_t i, uint8_t pts, uint8_t radix)`
 
 - result: `rD`
 - i: `rs1`
