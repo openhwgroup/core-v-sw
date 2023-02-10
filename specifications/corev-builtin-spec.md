@@ -52,6 +52,8 @@
 |             |         | - naming to include the ISA extension name;           |
 |             |         | - pass by reference only when loading a value;        |
 |             |         | - pseudo-overloading to allow 32- and 64-bit support; |
+| 13 Feb 2023 | 0.3     | Third draft after feedback from the GCC               |
+|             |         | implementation team.                                  |
 
 ## Executive Summary
 
@@ -192,17 +194,13 @@ _Generated assembler:_
 
 **Applicability.** 64-bit cores.
 
-The 64-bit equivalents provide 64-bit x 64-bit multiply-accuulate
-```
-int64_t __builtin_riscv_cv_mac_mac (int64_t x, int64_t y, int64_t z)
-int64_t __builtin_riscv_cv_mac_msu (int64_t x, int64_t y, int64_t z)
-```
+It is anticipated that 64-bit cores may wish to define 64-bit x 64-bit operations by analogy to the 32-bit x 32-bit operations on 32-bit cores.  No builtins are defined yet for such operations.
 
 ### 16-bit x 16-bit multiplication
 
 **Applicability.** 32-bit cores
 
-Even though these are 16-bit operands, we pass them as 32-bit, because the different instructions select different 16-bit words within the 32-bit word.
+Even though these are 16-bit operands, we pass them as 32-bit, because the different instructions select different 16-bit words within the 32-bit word.  The 32-bit words are always passed unsigned, even when the operations are signed, since we are extracting half words, from a 32-bit entity.  However the results from signed operations are 32-bit signed values.
 
 #### `uint32_t __builtin_riscv_cv_mac_muluN (uint32_t x, uint32_t y, const uint8_t shft)`
 
@@ -230,7 +228,7 @@ _Generated assembler:_
         cv.mulhhuN   rD,rs1,rs2,Is3
 ```
 
-#### `int32_t __builtin_riscv_cv_mac_mulsN (int32_t x, int32_t y, const uint8_t shft)`
+#### `int32_t __builtin_riscv_cv_mac_mulsN (uint32_t x, uint32_t y, const uint8_t shft)`
 
 _Argument/result mapping:_
 - result: `rD`
@@ -243,7 +241,7 @@ _Generated assembler:_
         cv.mulsN     rD,rs1,rs2,Is3
 ```
 
-#### `int32_t __builtin_riscv_cv_mac_mulhhsN (int32_t x, int32_t y, const uint8_t shft)`
+#### `int32_t __builtin_riscv_cv_mac_mulhhsN (uint32_t x, uint32_t y, const uint8_t shft)`
 
 _Argument/result mapping:_
 - result: `rD`
@@ -282,7 +280,7 @@ _Generated assembler:_
         cv.mulhhuRN  rD,rs1,rs2,Is3
 ```
 
-#### `int32_t __builtin_riscv_cv_mac_mulsRN (int32_t x, int32_t y, const uint8_t shft)`
+#### `int32_t __builtin_riscv_cv_mac_mulsRN (uint32_t x, uint32_t y, const uint8_t shft)`
 
 _Argument/result mapping:_
 - result: `rD`
@@ -295,7 +293,7 @@ _Generated assembler:_
         cv.mulsRN    rD,rs1,rs2,Is3
 ```
 
-#### `int32_t __builtin_riscv_cv_mac_mulhhsRN (int32_t x, int32_t y, const uint8_t shft)`
+#### `int32_t __builtin_riscv_cv_mac_mulhhsRN (uint32_t x, uint32_t y, const uint8_t shft)`
 
 _Argument/result mapping:_
 - result: `rD`
@@ -312,24 +310,13 @@ _Generated assembler:_
 
 **Applicability.** 64-bit cores.
 
-The 64-bit equivalents provide 32-bit x 32-bit multiplication. Even though these are 32-bit operands, we pass them as 64-bit, because the different instructions select different 32-bit words within the 64-bit word.
-
-```
-uint64_t __builtin_riscv_cv_mac_muluN (uint64_t x, uint64_t y, const uint8_t shft)
-uint64_t __builtin_riscv_cv_mac_mulhhuN (uint64_t x, uint64_t y, const uint8_t shft)
-int64_t __builtin_riscv_cv_mac_mulsN (int64_t x, int64_t y, const uint8_t shft)
-int64_t __builtin_riscv_cv_mac_mulhhsN (int64_t x, int64_t y, const uint8_t shft)
-uint64_t __builtin_riscv_cv_mac_muluRN (uint64_t x, uint64_t y, const uint8_t shft)
-uint64_t __builtin_riscv_cv_mac_mulhhuRN (uint64_t x, uint64_t y, const uint8_t shft)
-int64_t __builtin_riscv_cv_mac_mulsRN (int64_t x, int64_t y, const uint8_t shft)
-int64_t __builtin_riscv_cv_mac_mulhhsRN (int64_t x, int64_t y, const uint8_t shft)
-```
+It is anticipated that 64-bit cores may wish to define 32-bit x 32-bit operations by analogy to the 16-bit x 16-bit operations on 32-bit cores.  No builtins are defined yet for such operations.
 
 ### 16-bit x 16-bit multiply-accumulate
 
 **Applicability.** 32-bit cores.
 
-Even though these are 16-bit operands, we pass them as 32-bit, because the different instructions select different 16-bit words within the 32-bit word.
+Even though these are 16-bit operands, we pass them as 32-bit, because the different instructions select different 16-bit words within the 32-bit word.  The 32-bit words are always passed unsigned, even when the operations are signed, since we are extracting half words, from a 32-bit entity.  However the existing value passed in, and the results from signed operations are 32-bit signed values.
 
 As with the 32-bit x 32-bit multiply-accumulate, the ordering of arguments mirrors the standard C function, `fma`.
 
@@ -359,7 +346,7 @@ _Generated assembler:_
         cv.machhuN  rD,rs1,rs2,Is3
 ```
 
-#### `int32_t __builtin_riscv_cv_mac_macsN (int32_t x, int32_t y, int32_t z, const uint8_t shft)`
+#### `int32_t __builtin_riscv_cv_mac_macsN (uint32_t x, uint32_t y, int32_t z, const uint8_t shft)`
 
 _Argument/result mapping:_
 - result, z: `rD`
@@ -372,7 +359,7 @@ _Generated assembler:_
         cv.macsN  rD,rs1,rs2,Is3
 ```
 
-#### `int32_t __builtin_riscv_cv_mac_machhsN (int32_t x, int32_t y, int32_t z, const uint8_t shft)`
+#### `int32_t __builtin_riscv_cv_mac_machhsN (uint32_t x, uint32_t y, int32_t z, const uint8_t shft)`
 
 _Argument/result mapping:_
 - result, z: `rD`
@@ -411,7 +398,7 @@ _Generated assembler:_
         cv.machhuRN  rD,rs1,rs2,Is3
 ```
 
-#### `int32_t __builtin_riscv_cv_mac_macsRN (int32_t x, int32_t y, int32_t z, const uint8_t shft)`
+#### `int32_t __builtin_riscv_cv_mac_macsRN (uint32_t x, uint32_t y, int32_t z, const uint8_t shft)`
 
 _Argument/result mapping:_
 - result, z: `rD`
@@ -424,7 +411,7 @@ _Generated assembler:_
         cv.macsRN  rD,rs1,rs2,Is3
 ```
 
-#### `int32_t __builtin_riscv_cv_mac_machhsRN (int32_t x, int32_t y, int32_t z, const uint8_t shft)`
+#### `int32_t __builtin_riscv_cv_mac_machhsRN (uint32_t x, uint32_t y, int32_t z, const uint8_t shft)`
 
 _Argument/result mapping:_
 - result, z: `rD`
@@ -441,20 +428,7 @@ _Generated assembler:_
 
 **Applicability.** 64-bit cores.
 
-The 64-bit equivalents provide 32-bit x 32-bit operations.  Even though these are 32-bit operands, we pass them as 64-bit, because the different instructions select different 32-bit words within the 64-bit word.
-
-As with the 16-bit x 16-bit multiply-accumulate, the ordering of arguments mirrors the standard C function, `fma`.
-
-```
-uint32_t __builtin_riscv_cv_mac_macuN (uint32_t x, uint32_t y, uint32_t z, const uint8_t shft)
-uint32_t __builtin_riscv_cv_mac_machhuN (uint32_t x, uint32_t y, uint32_t z, const uint8_t shft)
-int32_t __builtin_riscv_cv_mac_macsN (int32_t x, int32_t y, int32_t z, const uint8_t shft)
-int32_t __builtin_riscv_cv_mac_machhsN (int32_t x, int32_t y, int32_t z, const uint8_t shft)
-uint32_t __builtin_riscv_cv_mac_macuRN (uint32_t x, uint32_t y, uint32_t z, const uint8_t shft)
-uint32_t __builtin_riscv_cv_mac_machhuRN (uint32_t x, uint32_t y, uint32_t z, const uint8_t shft)
-int32_t __builtin_riscv_cv_mac_macsRN (int32_t x, int32_t y, int32_t z, const uint8_t shft)
-int32_t __builtin_riscv_cv_mac_machhsRN (int32_t x, int32_t y, int32_t z, const uint8_t shft)
-```
+It is anticipated that 64-bit cores may wish to define 32-bit x 32-bit operations by analogy to the 16-bit x 16-bit operations on 32-bit cores.  No builtins are defined yet for such operations.
 
 ## Listing of immediate branch builtins (`xcvbi`)
 
@@ -469,6 +443,8 @@ There are no builtins for post-indexed and register-indexed memory access.
 ### ALU builtins for 32-bit cores
 
 **Applicability.** 32-bit cores.
+
+**Note:** A number of functions return boolean values.  This specification follows the C convention, where boolean values use the `int` type.
 
 #### `int __builtin_abs (int j)`
 
@@ -867,31 +843,7 @@ or case b)
 
 **Applicability.** 64-bit cores.
 
-**Note.**  This ISA extension was originally specified for a 32-bit architecture.  For 64-bit, there may be changes in semantics or instructions (for example to extend word to double word).
-
-```
-int __builtin_abs (int j)
-int __builtin_riscv_cv_alu_slet (int64_t  i, int64_t  j)
-int __builtin_riscv_cv_alu_sletu (uint64_t i, uint64_t j)
-int64_t __builtin_riscv_cv_alu_min (int64_t i, int64_t j)
-uint64_t __builtin_riscv_cv_alu_minu (uint64_t i, uint64_t j)
-int64_t __builtin_riscv_cv_alu_max (int64_t i, int64_t j)
-uint64_t __builtin_riscv_cv_alu_maxu (uint64_t i, uint64_t j)
-int64_t __builtin_riscv_cv_alu_exths (int16_t i)
-uint64_t __builtin_riscv_cv_alu_exthz (uint16_t i)
-int64_t __builtin_riscv_cv_alu_extbs (int8_t i)
-uint64_t __builtin_riscv_cv_alu_extbz (uint8_t)
-int64_t __builtin_riscv_cv_alu_clip (int64_t i, uint64_t j)
-uint64_t __builtin_riscv_cv_alu_clipu (uint64_t i, uint64_t j)
-int64_t __builtin_riscv_cv_alu_addN (int64_t x, int64_t y, uint8_t shft)
-uint64_t __builtin_riscv_cv_alu_adduN (uint64_t x, uint64_t y, uint8_t shft)
-int64_t __builtin_riscv_cv_alu_addRN (int64_t x, int64_t y, uint8_t shft)
-uint64_t __builtin_riscv_cv_alu_adduRN (uint64_t x, uint64_t y, uint8_t shft)
-int64_t __builtin_riscv_cv_alu_subN (int64_t x, int64_t y, uint8_t shft)
-uint64_t __builtin_riscv_cv_alu_subuN (uint64_t x, uint64_t y, uint8_t shft)
-int64_t __builtin_riscv_cv_alu_subRN (int64_t x, int64_t y, uint8_t shft)
-uint64_t __builtin_riscv_cv_alu_subuRN (uint64_t x, uint64_t y, uint8_t shft)
-```
+It is anticipated that 64-bit cores may wish to define ALU operations by analogy to the ALU operations on 32-bit cores.
 
 ## Listing of PULP 8/16-bit SIMD builtins (`xcvsimd`)
 
@@ -1568,7 +1520,7 @@ _Argument/result mapping:_
 _Generated assembler:_
 
 ```gas
-        cv.max.b  rD,rs1,rs2
+        cv.srl.b  rD,rs1,rs2
 ```
 
 #### `uint32_t __builtin_riscv_cv_simd_srl_sc_h (uint32_t i, uint8_t j)`
@@ -1644,7 +1596,7 @@ _Argument/result mapping:_
 _Generated assembler:_
 
 ```gas
-        cv.max.b  rD,rs1,rs2
+        cv.sra.b  rD,rs1,rs2
 ```
 
 #### `uint32_t __builtin_riscv_cv_simd_sra_sc_h (uint32_t i, uint8_t j)`
@@ -1720,7 +1672,7 @@ _Argument/result mapping:_
 _Generated assembler:_
 
 ```gas
-        cv.max.b  rD,rs1,rs2
+        cv.sll.b  rD,rs1,rs2
 ```
 
 #### `uint32_t __builtin_riscv_cv_simd_sll_sc_h (uint32_t i, uint8_t j)`
@@ -2121,6 +2073,8 @@ At the time of writing the SIMD architecture for 64-bit is not defined, so no bu
 
 ### SIMD dot product operations (32-bit)
 
+**Note.*** The documentation of these instructions uses `op2`, to refer to `rs2` for vector operations and `rs2` or `Is2` for scalar replication instructions.
+
 **Applicability.** 32-bit cores.
 
 #### `uint32_t __builtin_riscv_cv_simd_dotup_h (uint32_t i, uint32_t j)`
@@ -2199,7 +2153,7 @@ or case b)
         cv.dotup.sc.b  rD,rs1,rs2
 ```
 
-#### `uint32_t __builtin_riscv_cv_simd_dotusp_h (uint32_t i, uint32_t j)`
+#### `int32_t __builtin_riscv_cv_simd_dotusp_h (uint32_t i, uint32_t j)`
 
 _Argument/result mapping:_
 - result: `rD`
@@ -2212,7 +2166,7 @@ _Generated assembler:_
         cv.dotusp.h  rD,rs1,rs2
 ```
 
-#### `uint32_t __builtin_riscv_cv_simd_dotusp_b (uint32_t i, uint32_t j)`
+#### `int32_t __builtin_riscv_cv_simd_dotusp_b (uint32_t i, uint32_t j)`
 
 _Argument/result mapping:_
 - result: `rD`
@@ -2225,7 +2179,7 @@ _Generated assembler:_
         cv.dotusp.b  rD,rs1,rs2
 ```
 
-#### `uint32_t __builtin_riscv_cv_simd_dotusp_sc_h (uint32_t i, uint16_t j)`
+#### `int32_t __builtin_riscv_cv_simd_dotusp_sc_h (uint32_t i, int16_t j)`
 
 _Argument/result mapping:_
 
@@ -2250,7 +2204,7 @@ or case b)
         cv.dotusp.sc.h  rD,rs1,rs2
 ```
 
-#### `uint32_t __builtin_riscv_cv_simd_dotusp_sc_b (uint32_t i, uint8_t j)`
+#### `int32_t __builtin_riscv_cv_simd_dotusp_sc_b (uint32_t i, int8_t j)`
 
 _Argument/result mapping:_
 
@@ -2275,7 +2229,7 @@ or case b)
         cv.dotusp.sc.b  rD,rs1,rs2
 ```
 
-#### `uint32_t __builtin_riscv_cv_simd_dotsp_h (uint32_t i, uint32_t j)`
+#### `int32_t __builtin_riscv_cv_simd_dotsp_h (uint32_t i, uint32_t j)`
 
 _Argument/result mapping:_
 - result: `rD`
@@ -2288,7 +2242,7 @@ _Generated assembler:_
         cv.dotsp.h  rD,rs1,rs2
 ```
 
-#### `uint32_t __builtin_riscv_cv_simd_dotsp_b (uint32_t i, uint32_t j)`
+#### `int32_t __builtin_riscv_cv_simd_dotsp_b (uint32_t i, uint32_t j)`
 
 _Argument/result mapping:_
 - result: `rD`
@@ -2301,7 +2255,7 @@ _Generated assembler:_
         cv.dotsp.b  rD,rs1,rs2
 ```
 
-#### `uint32_t __builtin_riscv_cv_simd_dotsp_sc_h (uint32_t i, uint16_t j)`
+#### `int32_t __builtin_riscv_cv_simd_dotsp_sc_h (uint32_t i, int16_t j)`
 
 _Argument/result mapping:_
 
@@ -2326,7 +2280,7 @@ or case b)
         cv.dotsp.sc.h  rD,rs1,rs2
 ```
 
-#### `uint32_t __builtin_riscv_cv_simd_dotsp_sc_b (uint32_t i, uint8_t j)`
+#### `int32_t __builtin_riscv_cv_simd_dotsp_sc_b (uint32_t i, int8_t j)`
 
 _Argument/result mapping:_
 
@@ -2427,7 +2381,7 @@ or case b)
         cv.dotup.sc.b  rD,rs1,rs2
 ```
 
-#### `uint32_t __builtin_riscv_cv_simd_sdotusp_h (uint32_t i, uint32_t j, uint32_t k)`
+#### `int32_t __builtin_riscv_cv_simd_sdotusp_h (uint32_t i, uint32_t j, int32_t k)`
 
 _Argument/result mapping:_
 - result, k: `rD`
@@ -2440,7 +2394,7 @@ _Generated assembler:_
         cv.dotusp.h  rD,rs1,rs2
 ```
 
-#### `uint32_t __builtin_riscv_cv_simd_sdotusp_b (uint32_t i, uint32_t j, uint32_t k)`
+#### `int32_t __builtin_riscv_cv_simd_sdotusp_b (uint32_t i, uint32_t j, int32_t k)`
 
 _Argument/result mapping:_
 - result, k: `rD`
@@ -2453,7 +2407,7 @@ _Generated assembler:_
         cv.dotusp.b  rD,rs1,rs2
 ```
 
-#### `uint32_t __builtin_riscv_cv_simd_sdotusp_sc_h (uint32_t i, uint16_t j, uint32_t k)`
+#### `int32_t __builtin_riscv_cv_simd_sdotusp_sc_h (uint32_t i, int16_t j, int32_t k)`
 
 _Argument/result mapping:_
 
@@ -2478,7 +2432,7 @@ or case b)
         cv.dotusp.sc.h  rD,rs1,rs2
 ```
 
-#### `uint32_t __builtin_riscv_cv_simd_sdotusp_sc_b (uint32_t i, uint8_t j, uint32_t k)`
+#### `int32_t __builtin_riscv_cv_simd_sdotusp_sc_b (uint32_t i, int8_t j, int32_t k)`
 
 _Argument/result mapping:_
 
@@ -2503,7 +2457,7 @@ or case b)
         cv.dotusp.sc.b  rD,rs1,rs2
 ```
 
-#### `uint32_t __builtin_riscv_cv_simd_sdotsp_h (uint32_t i, uint32_t j, uint32_t k)`
+#### `int32_t __builtin_riscv_cv_simd_sdotsp_h (uint32_t i, uint32_t j, int32_t k)`
 
 _Argument/result mapping:_
 - result, k: `rD`
@@ -2516,7 +2470,7 @@ _Generated assembler:_
         cv.dotsp.h  rD,rs1,rs2
 ```
 
-#### `uint32_t __builtin_riscv_cv_simd_sdotsp_b (uint32_t i, uint32_t j, uint32_t k)`
+#### `int32_t __builtin_riscv_cv_simd_sdotsp_b (uint32_t i, uint32_t j, int32_t k)`
 
 _Argument/result mapping:_
 - result, k: `rD`
@@ -2529,7 +2483,7 @@ _Generated assembler:_
         cv.dotsp.b  rD,rs1,rs2
 ```
 
-#### `uint32_t __builtin_riscv_cv_simd_sdotsp_sc_h (uint32_t i, uint16_t j, uint32_t k)`
+#### `int32_t __builtin_riscv_cv_simd_sdotsp_sc_h (uint32_t i, int16_t j, int32_t k)`
 
 _Argument/result mapping:_
 
@@ -2554,7 +2508,7 @@ or case b)
         cv.dotsp.sc.h  rD,rs1,rs2
 ```
 
-#### `uint32_t __builtin_riscv_cv_simd_sdotsp_sc_b (uint32_t i, uint8_t j, uint32_t k)`
+#### `int32_t __builtin_riscv_cv_simd_sdotsp_sc_b (uint32_t i, int8_t j, int32_t k)`
 
 _Argument/result mapping:_
 
@@ -2609,7 +2563,7 @@ _Argument/result mapping:_
 
 - result: `rD`
 - i: `rs1`
-- flgs: `Is2` (6-bit unsigned value)
+- flgs: `Is2` (2-bit unsigned value)
 
 _Generated assembler:_
 
@@ -3228,7 +3182,7 @@ _Generated assembler:_
 
 _Argument/result mapping:_
 
-Case a) j is a constant in the range `-32 <= j <= 31`
+Case a) j is a constant in the range `0 <= j <= 63`
 - result: `rD`
 - i: `rs1`
 - j: `Is2` (6-bit unsigned value)
@@ -3253,7 +3207,7 @@ or case b)
 
 _Argument/result mapping:_
 
-Case a) j is a constant in the range `-32 <= j <= 31`
+Case a) j is a constant in the range `0 <= j <= 63`
 - result: `rD`
 - i: `rs1`
 - j: `Is2` (6-bit unsigned value)
@@ -3304,7 +3258,7 @@ _Generated assembler:_
 
 _Argument/result mapping:_
 
-Case a) j is a constant in the range `-32 <= j <= 31`
+Case a) j is a constant in the range `0 <= j <= 63`
 - result: `rD`
 - i: `rs1`
 - j: `Is2` (6-bit unsigned value)
@@ -3329,7 +3283,7 @@ or case b)
 
 _Argument/result mapping:_
 
-Case a) j is a constant in the range `-32 <= j <= 31`
+Case a) j is a constant in the range `0 <= j <= 63`
 - result: `rD`
 - i: `rs1`
 - j: `Is2` (6-bit unsigned value)
@@ -3380,7 +3334,7 @@ _Generated assembler:_
 
 _Argument/result mapping:_
 
-Case a) j is a constant in the range `-32 <= j <= 31`
+Case a) j is a constant in the range `0 <= j <= 63`
 - result: `rD`
 - i: `rs1`
 - j: `Is2` (6-bit unsigned value)
@@ -3405,7 +3359,7 @@ or case b)
 
 _Argument/result mapping:_
 
-Case a) j is a constant in the range `-32 <= j <= 31`
+Case a) j is a constant in the range `0 <= j <= 63`
 - result: `rD`
 - i: `rs1`
 - j: `Is2` (6-bit unsigned value)
@@ -3456,7 +3410,7 @@ _Generated assembler:_
 
 _Argument/result mapping:_
 
-Case a) j is a constant in the range `-32 <= j <= 31`
+Case a) j is a constant in the range `0 <= j <= 63`
 - result: `rD`
 - i: `rs1`
 - j: `Is2` (6-bit unsigned value)
@@ -3481,7 +3435,7 @@ or case b)
 
 _Argument/result mapping:_
 
-Case a) j is a constant in the range `-32 <= j <= 31`
+Case a) j is a constant in the range `0 <= j <= 63`
 - result: `rD`
 - i: `rs1`
 - j: `Is2` (6-bit unsigned value)
@@ -3599,7 +3553,7 @@ At the time of writing the SIMD architecture for 64-bit is not defined, so no bu
 
 Some of these functions modify the destination register, so need the value passed by reference, although for convenience the modfied value is returned as result.
 
-#### `int32_t __builtin_riscv_cv_bitmanip_extract (int32_t  i, uint16_t range)`
+#### `int32_t __builtin_riscv_cv_bitmanip_extract (uint32_t  i, uint16_t range)`
 
 Case a) range is a constant
 - result: `rD`
@@ -3623,7 +3577,7 @@ or case b)
         cv.extractr  rD,rs1,rs2
 ```
 
-#### `uint32_t __builtin_riscv_cv_bitmanip_cv.extractu (uint32_t, uint8_t, uint8_t)`
+#### `uint32_t __builtin_riscv_cv_bitmanip_extractu (uint32_t, uint8_t, uint8_t)`
 
 Case a) range is a constant
 - result: `rD`
@@ -3647,7 +3601,7 @@ or case b)
         cv.extractur  rD,rs1,rs2
 ```
 
-#### `uint32_t __builtin_riscv_cv_bitmanip_cv.insert(uint32_t i, uint16_t range, uint32_t  k)`
+#### `uint32_t __builtin_riscv_cv_bitmanip_insert(uint32_t i, uint16_t range, uint32_t  k)`
 
 Case a) range is a constant and `(range[9:5] + range [4:0]) <= 32` (TBC)
 - result, k: `rD`
@@ -3671,16 +3625,16 @@ or case b)
         cv.insertr  rD,rs1,rs2
 ```
 
-#### `uint32_t __builtin_riscv_cv_bitmanip_cv.bclr (uint32_t i, uint16_t range, uint16_t k)`
+#### `uint32_t __builtin_riscv_cv_bitmanip_bclr (uint32_t i, uint16_t range)`
 
 Case a) range is a constant
-- result, k: `rD`
+- result: `rD`
 - i: `rs1`
 - range[4:0]: `Is2` (5-bit unsigned value)
 - range[9:5]: `Is3` (5-bit unsigned value)
 
 or case b)
-- result, k: `rD`
+- result: `rD`
 - i: `rs1`
 - range: `rs2`
 
@@ -3695,16 +3649,16 @@ or case b)
         cv.bclrr  rD,rs1,rs2
 ```
 
-#### `uint32_t __builtin_riscv_cv_bitmanip_cv.bset (uint32_t i, uint16_t range, uint16_t k)`
+#### `uint32_t __builtin_riscv_cv_bitmanip_bset (uint32_t i, uint16_t range)`
 
 Case a) range is a constant
-- result, k: `rD`
+- result: `rD`
 - i: `rs1`
 - range[4:0]: `Is2` (5-bit unsigned value)
 - range[9:5]: `Is3` (5-bit unsigned value)
 
 or case b)
-- result, k: `rD`
+- result: `rD`
 - i: `rs1`
 - range: `rs2`
 
@@ -3719,7 +3673,7 @@ or case b)
         cv.bsetr  rD,rs1,rs2
 ```
 
-#### `uint8_t __builtin_riscv_cv_bitmanip_cv.ff1 (uint32_t i)`
+#### `uint8_t __builtin_riscv_cv_bitmanip_ff1 (uint32_t i)`
 
 - result: `rD`
 - i: `rs1`
@@ -3730,7 +3684,7 @@ _Generated assembler:_
         cv.ff1  rD,rs1
 ```
 
-#### `uint8_t __builtin_riscv_cv_bitmanip_cv.fl1 (uint32_t i)`
+#### `uint8_t __builtin_riscv_cv_bitmanip_fl1 (uint32_t i)`
 
 - result: `rD`
 - i: `rs1`
@@ -3741,7 +3695,7 @@ _Generated assembler:_
         cv.fl1  rD,rs1
 ```
 
-#### `uint8_t __builtin_riscv_cv_bitmanip_cv.clb (uint32_t i)`
+#### `uint8_t __builtin_riscv_cv_bitmanip_clb (uint32_t i)`
 
 - result: `rD`
 - i: `rs1`
@@ -3752,7 +3706,7 @@ _Generated assembler:_
         cv.clb  rD,rs1
 ```
 
-#### `uint8_t __builtin_riscv_cv_bitmanip_cv.cnt (uint32_t i)`
+#### `uint8_t __builtin_riscv_cv_bitmanip_cnt (uint32_t i)`
 
 - result: `rD`
 - i: `rs1`
@@ -3763,7 +3717,7 @@ _Generated assembler:_
         cv.cnt  rD,rs1
 ```
 
-#### `uint32_t __builtin_riscv_cv_bitmanip_cv.ror (uint32_t i, uint32_t j)`
+#### `uint32_t __builtin_riscv_cv_bitmanip_ror (uint32_t i, uint32_t j)`
 
 - result: `rD`
 - i: `rs1`
@@ -3775,7 +3729,7 @@ _Generated assembler:_
         cv.ror  rD,rs1,rs2
 ```
 
-#### `uint32_t __builtin_riscv_cv_bitmanip_cv.bitrev (uint32_t i, uint8_t pts, uint8_t radix)`
+#### `uint32_t __builtin_riscv_cv_bitmanip_bitrev (uint32_t i, uint8_t pts, uint8_t radix)`
 
 - result: `rD`
 - i: `rs1`
