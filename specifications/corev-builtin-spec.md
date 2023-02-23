@@ -35,7 +35,7 @@
   - [SIMD comparison operations (64-bit)](#simd-comparison-operations-64-bit)
   - [SIMD complex number operations (32-bit)](#simd-complex-number-operations-32-bit)
   - [SIMD complex number operations (64-bit)](#simd-complex-number-operations-64-bit)
-- [Listing of PULP bit manipulation builtins (`xcvbitmanip`)](#pulp-bit-manipulation-builtins-for-32-bit-cores)
+- [Listing of PULP bit manipulation builtins (`xcvbitmanip`)](#listing-of-pulp-bit-manipulation-builtins-xcvbitmanip)
   - [PULP bit manipulation builtins (32-bit)](#pulp-bit-manipulation-builtins-32-bit)
   - [PULP bit manipulation builtins (64-bit)](#pulp-bit-manipulation-builtins-64-bit)
 - [Listing of event load word builtins (`xcvelw`)](#listing-of-event-load-word-builtins-xcvelw)
@@ -55,6 +55,7 @@
 | 13 Feb 2023 | 0.3     | Third draft after feedback from the GCC               |
 |             |         | implementation team.                                  |
 | 16 Feb 2023 | 0.4     | Fourth draft incorporating Pascal Gouedo comments.    |
+| 23 Feb 2023 | 0.5     | Clean up tables of links, correct bitmanip extract.   |
 
 ## Executive Summary
 
@@ -163,8 +164,8 @@ There are no builtin functions for hardware loops.
 
 **Applicability.** 32-bit cores.
 
-- [`int32_t __builtin_riscv_cv_mac_mac`](#int32_t-__builtin_riscv_cv_mac_mac-int32_t-x-int32_t-y-int32_t-z)
-- [`int32_t __builtin_riscv_cv_mac_msu`](#int32_t-__builtin_riscv_cv_mac_msu-int32_t-x-int32_t-y-int32_t-z)
+- [`__builtin_riscv_cv_mac_mac`](#int32_t-__builtin_riscv_cv_mac_mac-int32_t-x-int32_t-y-int32_t-z)
+- [`__builtin_riscv_cv_mac_msu`](#int32_t-__builtin_riscv_cv_mac_msu-int32_t-x-int32_t-y-int32_t-z)
 
 The ordering of arguments mirrors the standard C function `fma`
 
@@ -204,14 +205,14 @@ It is anticipated that 64-bit cores may wish to define 64-bit x 64-bit operation
 
 **Applicability.** 32-bit cores
 
-- [`uint32_t __builtin_riscv_cv_mac_muluN`](#uint32_t-__builtin_riscv_cv_mac_muluN-uint32_t-x-uint32_t-y-const-uint8_t-shft)
-- [`uint32_t __builtin_riscv_cv_mac_mulhhuN`](#uint32_t-__builtin_riscv_cv_mac_mulhhuN-uint32_t-x-uint32_t-y-const-uint8_t-shft)
-- [`int32_t __builtin_riscv_cv_mac_mulsN`](#int32_t-__builtin_riscv_cv_mac_mulsN-uint32_t-x-uint32_t-y-const-uint8_t-shft)
-- [`int32_t __builtin_riscv_cv_mac_mulhhsN`](#int32_t-__builtin_riscv_cv_mac_mulhhsN-uint32_t-x-uint32_t-y-const-uint8_t-shft)
-- [`uint32_t __builtin_riscv_cv_mac_muluRN`](#uint32_t-__builtin_riscv_cv_mac_muluRN-uint32_t-x-uint32_t-y-const-uint8_t-shft)
-- [`uint32_t __builtin_riscv_cv_mac_mulhhuRN`](#uint32_t-__builtin_riscv_cv_mac_mulhhuRN-uint32_t-x-uint32_t-y-const-uint8_t-shft)
-- [`int32_t __builtin_riscv_cv_mac_mulsRN`](#int32_t-__builtin_riscv_cv_mac_mulsRN-uint32_t-x-uint32_t-y-const-uint8_t-shft)
-- [`int32_t __builtin_riscv_cv_mac_mulhhsRN`](#int32_t-__builtin_riscv_cv_mac_mulhhsRN-uint32_t-x-uint32_t-y-const-uint8_t-shft)
+- [`__builtin_riscv_cv_mac_muluN`](#uint32_t-__builtin_riscv_cv_mac_muluN-uint32_t-x-uint32_t-y-const-uint8_t-shft)
+- [`__builtin_riscv_cv_mac_mulhhuN`](#uint32_t-__builtin_riscv_cv_mac_mulhhuN-uint32_t-x-uint32_t-y-const-uint8_t-shft)
+- [`__builtin_riscv_cv_mac_mulsN`](#int32_t-__builtin_riscv_cv_mac_mulsN-uint32_t-x-uint32_t-y-const-uint8_t-shft)
+- [`__builtin_riscv_cv_mac_mulhhsN`](#int32_t-__builtin_riscv_cv_mac_mulhhsN-uint32_t-x-uint32_t-y-const-uint8_t-shft)
+- [`__builtin_riscv_cv_mac_muluRN`](#uint32_t-__builtin_riscv_cv_mac_muluRN-uint32_t-x-uint32_t-y-const-uint8_t-shft)
+- [`__builtin_riscv_cv_mac_mulhhuRN`](#uint32_t-__builtin_riscv_cv_mac_mulhhuRN-uint32_t-x-uint32_t-y-const-uint8_t-shft)
+- [`__builtin_riscv_cv_mac_mulsRN`](#int32_t-__builtin_riscv_cv_mac_mulsRN-uint32_t-x-uint32_t-y-const-uint8_t-shft)
+- [`__builtin_riscv_cv_mac_mulhhsRN`](#int32_t-__builtin_riscv_cv_mac_mulhhsRN-uint32_t-x-uint32_t-y-const-uint8_t-shft)
 
 Even though these are 16-bit operands, we pass them as 32-bit, because the different instructions select different 16-bit words within the 32-bit word.  The 32-bit words are always passed unsigned, even when the operations are signed, since we are extracting half words, from a 32-bit entity.  However the results from signed operations are 32-bit signed values.
 
@@ -329,14 +330,14 @@ It is anticipated that 64-bit cores may wish to define 32-bit x 32-bit operation
 
 **Applicability.** 32-bit cores.
 
-- [`uint32_t __builtin_riscv_cv_mac_macuN`](#uint32_t-__builtin_riscv_cv_mac_macuN-uint32_t-x-uint32_t-y-uint32_t-z-const-uint8_t-shft)
-- [`uint32_t __builtin_riscv_cv_mac_machhuN`](#uint32_t-__builtin_riscv_cv_mac_machhuN-uint32_t-x-uint32_t-y-uint32_t-z-const-uint8_t-shft)
-- [`int32_t __builtin_riscv_cv_mac_macsN`](#int32_t-__builtin_riscv_cv_mac_macsN-uint32_t-x-uint32_t-y-int32_t-z-const-uint8_t-shft)
-- [`int32_t __builtin_riscv_cv_mac_machhsN`](#int32_t-__builtin_riscv_cv_mac_machhsN-uint32_t-x-uint32_t-y-int32_t-z-const-uint8_t-shft)
-- [`uint32_t __builtin_riscv_cv_mac_macuRN`](#uint32_t-__builtin_riscv_cv_mac_macuRN-uint32_t-x-uint32_t-y-uint32_t-z-const-uint8_t-shft)
-- [`uint32_t __builtin_riscv_cv_mac_machhuRN`](#uint32_t-__builtin_riscv_cv_mac_machhuRN-uint32_t-x-uint32_t-y-uint32_t-z-const-uint8_t-shft)
-- [`int32_t __builtin_riscv_cv_mac_macsRN`](#int32_t-__builtin_riscv_cv_mac_macsRN-uint32_t-x-uint32_t-y-int32_t-z-const-uint8_t-shft)
-- [`int32_t __builtin_riscv_cv_mac_machhsRN`](#int32_t-__builtin_riscv_cv_mac_machhsRN-uint32_t-x-uint32_t-y-int32_t-z-const-uint8_t-shft)
+- [`__builtin_riscv_cv_mac_macuN`](#uint32_t-__builtin_riscv_cv_mac_macuN-uint32_t-x-uint32_t-y-uint32_t-z-const-uint8_t-shft)
+- [`__builtin_riscv_cv_mac_machhuN`](#uint32_t-__builtin_riscv_cv_mac_machhuN-uint32_t-x-uint32_t-y-uint32_t-z-const-uint8_t-shft)
+- [`__builtin_riscv_cv_mac_macsN`](#int32_t-__builtin_riscv_cv_mac_macsN-uint32_t-x-uint32_t-y-int32_t-z-const-uint8_t-shft)
+- [`__builtin_riscv_cv_mac_machhsN`](#int32_t-__builtin_riscv_cv_mac_machhsN-uint32_t-x-uint32_t-y-int32_t-z-const-uint8_t-shft)
+- [`__builtin_riscv_cv_mac_macuRN`](#uint32_t-__builtin_riscv_cv_mac_macuRN-uint32_t-x-uint32_t-y-uint32_t-z-const-uint8_t-shft)
+- [`__builtin_riscv_cv_mac_machhuRN`](#uint32_t-__builtin_riscv_cv_mac_machhuRN-uint32_t-x-uint32_t-y-uint32_t-z-const-uint8_t-shft)
+- [`__builtin_riscv_cv_mac_macsRN`](#int32_t-__builtin_riscv_cv_mac_macsRN-uint32_t-x-uint32_t-y-int32_t-z-const-uint8_t-shft)
+- [`__builtin_riscv_cv_mac_machhsRN`](#int32_t-__builtin_riscv_cv_mac_machhsRN-uint32_t-x-uint32_t-y-int32_t-z-const-uint8_t-shft)
 
 Even though these are 16-bit operands, we pass them as 32-bit, because the different instructions select different 16-bit words within the 32-bit word.  The 32-bit words are always passed unsigned, even when the operations are signed, since we are extracting half words, from a 32-bit entity.  However the existing value passed in, and the results from signed operations are 32-bit signed values.
 
@@ -466,27 +467,27 @@ There are no builtins for post-indexed and register-indexed memory access.
 
 **Applicability.** 32-bit cores.
 
-- [`int __builtin_abs`](#int-__builtin_abs-int-j)
-- [`int __builtin_riscv_cv_alu_slet`](#int-__builtin_riscv_cv_alu_slet-int32_t--i-int32_t--j)
-- [`int __builtin_riscv_cv_alu_sletu`](#int-__builtin_riscv_cv_alu_sletu-uint32_t-i-uint32_t-j)
-- [`int32_t __builtin_riscv_cv_alu_min`](#int32_t-__builtin_riscv_cv_alu_min-int32_t-i-int32_t-j)
-- [`uint32_t __builtin_riscv_cv_alu_minu`](#uint32_t-__builtin_riscv_cv_alu_minu-uint32_t-i-uint32_t-j)
-- [`int32_t __builtin_riscv_cv_alu_max`](#int32_t-__builtin_riscv_cv_alu_max-int32_t-i-int32_t-j)
-- [`uint32_t __builtin_riscv_cv_alu_maxu`](#uint32_t-__builtin_riscv_cv_alu_maxu-uint32_t-i-uint32_t-j)
-- [`int32_t __builtin_riscv_cv_alu_exths`](#int32_t-__builtin_riscv_cv_alu_exths-int16_t-i)
-- [`uint32_t __builtin_riscv_cv_alu_exthz`](#uint32_t-__builtin_riscv_cv_alu_exthz-uint16_t-i)
-- [`int32_t __builtin_riscv_cv_alu_extbs`](#int32_t-__builtin_riscv_cv_alu_extbs-int8_t-i)
-- [`uint32_t __builtin_riscv_cv_alu_extbz`](#uint32_t-__builtin_riscv_cv_alu_extbz-uint8_t)
-- [`int32_t __builtin_riscv_cv_alu_clip`](#int32_t-__builtin_riscv_cv_alu_clip-int32_t-i-uint32_t-j)
-- [`uint32_t __builtin_riscv_cv_alu_clipu`](#uint32_t-__builtin_riscv_cv_alu_clipu-uint32_t-i-uint32_t-j)
-- [`int32_t __builtin_riscv_cv_alu_addN`](#int32_t-__builtin_riscv_cv_alu_addN-int32_t-x-int32_t-y-uint8_t-shft)
-- [`uint32_t __builtin_riscv_cv_alu_adduN`](#uint32_t-__builtin_riscv_cv_alu_adduN-uint32_t-x-uint32_t-y-uint8_t-shft)
-- [`int32_t __builtin_riscv_cv_alu_addRN`](#int32_t-__builtin_riscv_cv_alu_addRN-int32_t-x-int32_t-y-uint8_t-shft)
-- [`uint32_t __builtin_riscv_cv_alu_adduRN`](#uint32_t-__builtin_riscv_cv_alu_adduRN-uint32_t-x-uint32_t-y-uint8_t-shft)
-- [`int32_t __builtin_riscv_cv_alu_subN`](#int32_t-__builtin_riscv_cv_alu_subN-int32_t-x-int32_t-y-uint8_t-shft)
-- [`uint32_t __builtin_riscv_cv_alu_subuN`](#uint32_t-__builtin_riscv_cv_alu_subuN-uint32_t-x-uint32_t-y-uint8_t-shft)
-- [`int32_t __builtin_riscv_cv_alu_subRN`](#int32_t-__builtin_riscv_cv_alu_subRN-int32_t-x-int32_t-y-uint8_t-shft)
-- [`uint32_t __builtin_riscv_cv_alu_subuRN`](#uint32_t-__builtin_riscv_cv_alu_subuRN-uint32_t-x-uint32_t-y-uint8_t-shft)
+- [`__builtin_abs`](#int-__builtin_abs-int-j)
+- [`__builtin_riscv_cv_alu_slet`](#int-__builtin_riscv_cv_alu_slet-int32_t--i-int32_t--j)
+- [`__builtin_riscv_cv_alu_sletu`](#int-__builtin_riscv_cv_alu_sletu-uint32_t-i-uint32_t-j)
+- [`__builtin_riscv_cv_alu_min`](#int32_t-__builtin_riscv_cv_alu_min-int32_t-i-int32_t-j)
+- [`__builtin_riscv_cv_alu_minu`](#uint32_t-__builtin_riscv_cv_alu_minu-uint32_t-i-uint32_t-j)
+- [`__builtin_riscv_cv_alu_max`](#int32_t-__builtin_riscv_cv_alu_max-int32_t-i-int32_t-j)
+- [`__builtin_riscv_cv_alu_maxu`](#uint32_t-__builtin_riscv_cv_alu_maxu-uint32_t-i-uint32_t-j)
+- [`__builtin_riscv_cv_alu_exths`](#int32_t-__builtin_riscv_cv_alu_exths-int16_t-i)
+- [`__builtin_riscv_cv_alu_exthz`](#uint32_t-__builtin_riscv_cv_alu_exthz-uint16_t-i)
+- [`__builtin_riscv_cv_alu_extbs`](#int32_t-__builtin_riscv_cv_alu_extbs-int8_t-i)
+- [`__builtin_riscv_cv_alu_extbz`](#uint32_t-__builtin_riscv_cv_alu_extbz-uint8_t)
+- [`__builtin_riscv_cv_alu_clip`](#int32_t-__builtin_riscv_cv_alu_clip-int32_t-i-uint32_t-j)
+- [`__builtin_riscv_cv_alu_clipu`](#uint32_t-__builtin_riscv_cv_alu_clipu-uint32_t-i-uint32_t-j)
+- [`__builtin_riscv_cv_alu_addN`](#int32_t-__builtin_riscv_cv_alu_addN-int32_t-x-int32_t-y-uint8_t-shft)
+- [`__builtin_riscv_cv_alu_adduN`](#uint32_t-__builtin_riscv_cv_alu_adduN-uint32_t-x-uint32_t-y-uint8_t-shft)
+- [`__builtin_riscv_cv_alu_addRN`](#int32_t-__builtin_riscv_cv_alu_addRN-int32_t-x-int32_t-y-uint8_t-shft)
+- [`__builtin_riscv_cv_alu_adduRN`](#uint32_t-__builtin_riscv_cv_alu_adduRN-uint32_t-x-uint32_t-y-uint8_t-shft)
+- [`__builtin_riscv_cv_alu_subN`](#int32_t-__builtin_riscv_cv_alu_subN-int32_t-x-int32_t-y-uint8_t-shft)
+- [`__builtin_riscv_cv_alu_subuN`](#uint32_t-__builtin_riscv_cv_alu_subuN-uint32_t-x-uint32_t-y-uint8_t-shft)
+- [`__builtin_riscv_cv_alu_subRN`](#int32_t-__builtin_riscv_cv_alu_subRN-int32_t-x-int32_t-y-uint8_t-shft)
+- [`__builtin_riscv_cv_alu_subuRN`](#uint32_t-__builtin_riscv_cv_alu_subuRN-uint32_t-x-uint32_t-y-uint8_t-shft)
 
 **Note:** A number of functions return boolean values.  This specification follows the C convention, where boolean values use the `int` type.
 
@@ -921,64 +922,64 @@ It is anticipated that 64-bit cores may wish to define ALU operations by analogy
 
 **Applicability.** 32-bit cores.
 
-- [`uint32_t __builtin_riscv_cv_simd_add_h`](#uint32_t-__builtin_riscv_cv_simd_add_h-uint32_t-i-uint32_t-j-const-uint8_t-shft)
-- [`uint32_t __builtin_riscv_cv_simd_add_b`](#uint32_t-__builtin_riscv_cv_simd_add_b-uint32_t-i-uint32_t-j)
-- [`uint32_t __builtin_riscv_cv_simd_add_sc_h`](#uint32_t-__builtin_riscv_cv_simd_add_sc_h-uint32_t-i-int16_t-j)
-- [`uint32_t __builtin_riscv_cv_simd_add_sc_b`](#uint32_t-__builtin_riscv_cv_simd_add_sc_b-uint32_t-i-int8_t-j)
-- [`uint32_t __builtin_riscv_cv_simd_sub_h`](#uint32_t-__builtin_riscv_cv_simd_sub_h-uint32_t-i-uint32_t-j-const-uint8_t-shft)
-- [`uint32_t __builtin_riscv_cv_simd_sub_b`](#uint32_t-__builtin_riscv_cv_simd_sub_b-uint32_t-i-uint32_t-j)
-- [`uint32_t __builtin_riscv_cv_simd_sub_sc_h`](#uint32_t-__builtin_riscv_cv_simd_sub_sc_h-uint32_t-i-int16_t-j)
-- [`uint32_t __builtin_riscv_cv_simd_sub_sc_b`](#uint32_t-__builtin_riscv_cv_simd_sub_sc_b-uint32_t-i-int8_t-j)
-- [`uint32_t __builtin_riscv_cv_simd_avg_h`](#uint32_t-__builtin_riscv_cv_simd_avg_h-uint32_t-i-uint32_t-j)
-- [`uint32_t __builtin_riscv_cv_simd_avg_b`](#uint32_t-__builtin_riscv_cv_simd_avg_b-uint32_t-i-uint32_t-j)
-- [`uint32_t __builtin_riscv_cv_simd_avg_sc_h`](#uint32_t-__builtin_riscv_cv_simd_avg_sc_h-uint32_t-i-int16_t-j)
-- [`uint32_t __builtin_riscv_cv_simd_avg_sc_b`](#uint32_t-__builtin_riscv_cv_simd_avg_sc_b-uint32_t-i-int8_t-j)
-- [`uint32_t __builtin_riscv_cv_simd_avgu_h`](#uint32_t-__builtin_riscv_cv_simd_avgu_h-uint32_t-i-uint32_t-j)
-- [`uint32_t __builtin_riscv_cv_simd_avgu_b`](#uint32_t-__builtin_riscv_cv_simd_avgu_b-uint32_t-i-uint32_t-j)
-- [`uint32_t __builtin_riscv_cv_simd_avgu_sc_h`](#uint32_t-__builtin_riscv_cv_simd_avgu_sc_h-uint32_t-i-uint16_t-j)
-- [`uint32_t __builtin_riscv_cv_simd_avgu_sc_b`](#uint32_t-__builtin_riscv_cv_simd_avgu_sc_b-uint32_t-i-uint8_t-j)
-- [`uint32_t __builtin_riscv_cv_simd_min_h`](#uint32_t-__builtin_riscv_cv_simd_min_h-uint32_t-i-uint32_t-j)
-- [`uint32_t __builtin_riscv_cv_simd_min_b`](#uint32_t-__builtin_riscv_cv_simd_min_b-uint32_t-i-uint32_t-j)
-- [`uint32_t __builtin_riscv_cv_simd_min_sc_h`](#uint32_t-__builtin_riscv_cv_simd_min_sc_h-uint32_t-i-int16_t-j)
-- [`uint32_t __builtin_riscv_cv_simd_min_sc_b`](#uint32_t-__builtin_riscv_cv_simd_min_sc_b-uint32_t-i-int8_t-j)
-- [`uint32_t __builtin_riscv_cv_simd_minu_h`](#uint32_t-__builtin_riscv_cv_simd_minu_h-uint32_t-i-uint32_t-j)
-- [`uint32_t __builtin_riscv_cv_simd_minu_b`](#uint32_t-__builtin_riscv_cv_simd_minu_b-uint32_t-i-uint32_t-j)
-- [`uint32_t __builtin_riscv_cv_simd_minu_sc_h`](#uint32_t-__builtin_riscv_cv_simd_minu_sc_h-uint32_t-i-uint16_t-j)
-- [`uint32_t __builtin_riscv_cv_simd_minu_sc_b`](#uint32_t-__builtin_riscv_cv_simd_minu_sc_b-uint32_t-i-uint8_t-j)
-- [`uint32_t __builtin_riscv_cv_simd_max_h`](#uint32_t-__builtin_riscv_cv_simd_max_h-uint32_t-i-uint32_t-j)
-- [`uint32_t __builtin_riscv_cv_simd_max_b`](#uint32_t-__builtin_riscv_cv_simd_max_b-uint32_t-i-uint32_t-j)
-- [`uint32_t __builtin_riscv_cv_simd_max_sc_h`](#uint32_t-__builtin_riscv_cv_simd_max_sc_h-uint32_t-i-int16_t-j)
-- [`uint32_t __builtin_riscv_cv_simd_max_sc_b`](#uint32_t-__builtin_riscv_cv_simd_max_sc_b-uint32_t-i-int8_t-j)
-- [`uint32_t __builtin_riscv_cv_simd_maxu_h`](#uint32_t-__builtin_riscv_cv_simd_maxu_h-uint32_t-i-uint32_t-j)
-- [`uint32_t __builtin_riscv_cv_simd_maxu_b`](#uint32_t-__builtin_riscv_cv_simd_maxu_b-uint32_t-i-uint32_t-j)
-- [`uint32_t __builtin_riscv_cv_simd_maxu_sc_h`](#uint32_t-__builtin_riscv_cv_simd_maxu_sc_h-uint32_t-i-uint16_t-j)
-- [`uint32_t __builtin_riscv_cv_simd_maxu_sc_b`](#uint32_t-__builtin_riscv_cv_simd_maxu_sc_b-uint32_t-i-uint8_t-j)
-- [`uint32_t __builtin_riscv_cv_simd_srl_h`](#uint32_t-__builtin_riscv_cv_simd_srl_h-uint32_t-i-uint32_t-j)
-- [`uint32_t __builtin_riscv_cv_simd_srl_b`](#uint32_t-__builtin_riscv_cv_simd_srl_b-uint32_t-i-uint32_t-j)
-- [`uint32_t __builtin_riscv_cv_simd_srl_sc_h`](#uint32_t-__builtin_riscv_cv_simd_srl_sc_h-uint32_t-i-uint8_t-j)
-- [`uint32_t __builtin_riscv_cv_simd_srl_sc_b`](#uint32_t-__builtin_riscv_cv_simd_srl_sc_b-uint32_t-i-uint8_t-j)
-- [`uint32_t __builtin_riscv_cv_simd_sra_h`](#uint32_t-__builtin_riscv_cv_simd_sra_h-uint32_t-i-uint32_t-j)
-- [`uint32_t __builtin_riscv_cv_simd_sra_b`](#uint32_t-__builtin_riscv_cv_simd_sra_b-uint32_t-i-uint32_t-j)
-- [`uint32_t __builtin_riscv_cv_simd_sra_sc_h`](#uint32_t-__builtin_riscv_cv_simd_sra_sc_h-uint32_t-i-uint8_t-j)
-- [`uint32_t __builtin_riscv_cv_simd_sra_sc_b`](#uint32_t-__builtin_riscv_cv_simd_sra_sc_b-uint32_t-i-uint8_t-j)
-- [`uint32_t __builtin_riscv_cv_simd_sll_h`](#uint32_t-__builtin_riscv_cv_simd_sll_h-uint32_t-i-uint32_t-j)
-- [`uint32_t __builtin_riscv_cv_simd_sll_b`](#uint32_t-__builtin_riscv_cv_simd_sll_b-uint32_t-i-uint32_t-j)
-- [`uint32_t __builtin_riscv_cv_simd_sll_sc_h`](#uint32_t-__builtin_riscv_cv_simd_sll_sc_h-uint32_t-i-uint8_t-j)
-- [`uint32_t __builtin_riscv_cv_simd_sll_sc_b`](#uint32_t-__builtin_riscv_cv_simd_sll_sc_b-uint32_t-i-uint8_t-j)
-- [`uint32_t __builtin_riscv_cv_simd_or_h`](#uint32_t-__builtin_riscv_cv_simd_or_h-uint32_t-i-uint32_t-j)
-- [`uint32_t __builtin_riscv_cv_simd_or_b`](#uint32_t-__builtin_riscv_cv_simd_or_b-uint32_t-i-uint32_t-j)
-- [`uint32_t __builtin_riscv_cv_simd_or_sc_h`](#uint32_t-__builtin_riscv_cv_simd_or_sc_h-uint32_t-i-uint16_t-j)
-- [`uint32_t __builtin_riscv_cv_simd_or_sc_b`](#uint32_t-__builtin_riscv_cv_simd_or_sc_b-uint32_t-i-uint8_t-j)
-- [`uint32_t __builtin_riscv_cv_simd_xor_h`](#uint32_t-__builtin_riscv_cv_simd_xor_h-uint32_t-i-uint32_t-j)
-- [`uint32_t __builtin_riscv_cv_simd_xor_b`](#uint32_t-__builtin_riscv_cv_simd_xor_b-uint32_t-i-uint32_t-j)
-- [`uint32_t __builtin_riscv_cv_simd_xor_sc_h`](#uint32_t-__builtin_riscv_cv_simd_xor_sc_h-uint32_t-i-uint16_t-j)
-- [`uint32_t __builtin_riscv_cv_simd_xor_sc_b`](#uint32_t-__builtin_riscv_cv_simd_xor_sc_b-uint32_t-i-uint8_t-j)
-- [`uint32_t __builtin_riscv_cv_simd_and_h`](#uint32_t-__builtin_riscv_cv_simd_and_h-uint32_t-i-uint32_t-j)
-- [`uint32_t __builtin_riscv_cv_simd_and_b`](#uint32_t-__builtin_riscv_cv_simd_and_b-uint32_t-i-uint32_t-j)
-- [`uint32_t __builtin_riscv_cv_simd_and_sc_h`](#uint32_t-__builtin_riscv_cv_simd_and_sc_h-uint32_t-i-uint16_t-j)
-- [`uint32_t __builtin_riscv_cv_simd_and_sc_b`](#uint32_t-__builtin_riscv_cv_simd_and_sc_b-uint32_t-i-uint8_t-j)
-- [`uint32_t __builtin_riscv_cv_simd_abs_h`](#uint32_t-__builtin_riscv_cv_simd_abs_h-uint32_t-i)
-- [`uint32_t __builtin_riscv_cv_simd_abs_b`](#uint32_t-__builtin_riscv_cv_simd_abs_b-uint32_t-i)
+- [`__builtin_riscv_cv_simd_add_h`](#uint32_t-__builtin_riscv_cv_simd_add_h-uint32_t-i-uint32_t-j-const-uint8_t-shft)
+- [`__builtin_riscv_cv_simd_add_b`](#uint32_t-__builtin_riscv_cv_simd_add_b-uint32_t-i-uint32_t-j)
+- [`__builtin_riscv_cv_simd_add_sc_h`](#uint32_t-__builtin_riscv_cv_simd_add_sc_h-uint32_t-i-int16_t-j)
+- [`__builtin_riscv_cv_simd_add_sc_b`](#uint32_t-__builtin_riscv_cv_simd_add_sc_b-uint32_t-i-int8_t-j)
+- [`__builtin_riscv_cv_simd_sub_h`](#uint32_t-__builtin_riscv_cv_simd_sub_h-uint32_t-i-uint32_t-j-const-uint8_t-shft)
+- [`__builtin_riscv_cv_simd_sub_b`](#uint32_t-__builtin_riscv_cv_simd_sub_b-uint32_t-i-uint32_t-j)
+- [`__builtin_riscv_cv_simd_sub_sc_h`](#uint32_t-__builtin_riscv_cv_simd_sub_sc_h-uint32_t-i-int16_t-j)
+- [`__builtin_riscv_cv_simd_sub_sc_b`](#uint32_t-__builtin_riscv_cv_simd_sub_sc_b-uint32_t-i-int8_t-j)
+- [`__builtin_riscv_cv_simd_avg_h`](#uint32_t-__builtin_riscv_cv_simd_avg_h-uint32_t-i-uint32_t-j)
+- [`__builtin_riscv_cv_simd_avg_b`](#uint32_t-__builtin_riscv_cv_simd_avg_b-uint32_t-i-uint32_t-j)
+- [`__builtin_riscv_cv_simd_avg_sc_h`](#uint32_t-__builtin_riscv_cv_simd_avg_sc_h-uint32_t-i-int16_t-j)
+- [`__builtin_riscv_cv_simd_avg_sc_b`](#uint32_t-__builtin_riscv_cv_simd_avg_sc_b-uint32_t-i-int8_t-j)
+- [`__builtin_riscv_cv_simd_avgu_h`](#uint32_t-__builtin_riscv_cv_simd_avgu_h-uint32_t-i-uint32_t-j)
+- [`__builtin_riscv_cv_simd_avgu_b`](#uint32_t-__builtin_riscv_cv_simd_avgu_b-uint32_t-i-uint32_t-j)
+- [`__builtin_riscv_cv_simd_avgu_sc_h`](#uint32_t-__builtin_riscv_cv_simd_avgu_sc_h-uint32_t-i-uint16_t-j)
+- [`__builtin_riscv_cv_simd_avgu_sc_b`](#uint32_t-__builtin_riscv_cv_simd_avgu_sc_b-uint32_t-i-uint8_t-j)
+- [`__builtin_riscv_cv_simd_min_h`](#uint32_t-__builtin_riscv_cv_simd_min_h-uint32_t-i-uint32_t-j)
+- [`__builtin_riscv_cv_simd_min_b`](#uint32_t-__builtin_riscv_cv_simd_min_b-uint32_t-i-uint32_t-j)
+- [`__builtin_riscv_cv_simd_min_sc_h`](#uint32_t-__builtin_riscv_cv_simd_min_sc_h-uint32_t-i-int16_t-j)
+- [`__builtin_riscv_cv_simd_min_sc_b`](#uint32_t-__builtin_riscv_cv_simd_min_sc_b-uint32_t-i-int8_t-j)
+- [`__builtin_riscv_cv_simd_minu_h`](#uint32_t-__builtin_riscv_cv_simd_minu_h-uint32_t-i-uint32_t-j)
+- [`__builtin_riscv_cv_simd_minu_b`](#uint32_t-__builtin_riscv_cv_simd_minu_b-uint32_t-i-uint32_t-j)
+- [`__builtin_riscv_cv_simd_minu_sc_h`](#uint32_t-__builtin_riscv_cv_simd_minu_sc_h-uint32_t-i-uint16_t-j)
+- [`__builtin_riscv_cv_simd_minu_sc_b`](#uint32_t-__builtin_riscv_cv_simd_minu_sc_b-uint32_t-i-uint8_t-j)
+- [`__builtin_riscv_cv_simd_max_h`](#uint32_t-__builtin_riscv_cv_simd_max_h-uint32_t-i-uint32_t-j)
+- [`__builtin_riscv_cv_simd_max_b`](#uint32_t-__builtin_riscv_cv_simd_max_b-uint32_t-i-uint32_t-j)
+- [`__builtin_riscv_cv_simd_max_sc_h`](#uint32_t-__builtin_riscv_cv_simd_max_sc_h-uint32_t-i-int16_t-j)
+- [`__builtin_riscv_cv_simd_max_sc_b`](#uint32_t-__builtin_riscv_cv_simd_max_sc_b-uint32_t-i-int8_t-j)
+- [`__builtin_riscv_cv_simd_maxu_h`](#uint32_t-__builtin_riscv_cv_simd_maxu_h-uint32_t-i-uint32_t-j)
+- [`__builtin_riscv_cv_simd_maxu_b`](#uint32_t-__builtin_riscv_cv_simd_maxu_b-uint32_t-i-uint32_t-j)
+- [`__builtin_riscv_cv_simd_maxu_sc_h`](#uint32_t-__builtin_riscv_cv_simd_maxu_sc_h-uint32_t-i-uint16_t-j)
+- [`__builtin_riscv_cv_simd_maxu_sc_b`](#uint32_t-__builtin_riscv_cv_simd_maxu_sc_b-uint32_t-i-uint8_t-j)
+- [`__builtin_riscv_cv_simd_srl_h`](#uint32_t-__builtin_riscv_cv_simd_srl_h-uint32_t-i-uint32_t-j)
+- [`__builtin_riscv_cv_simd_srl_b`](#uint32_t-__builtin_riscv_cv_simd_srl_b-uint32_t-i-uint32_t-j)
+- [`__builtin_riscv_cv_simd_srl_sc_h`](#uint32_t-__builtin_riscv_cv_simd_srl_sc_h-uint32_t-i-uint8_t-j)
+- [`__builtin_riscv_cv_simd_srl_sc_b`](#uint32_t-__builtin_riscv_cv_simd_srl_sc_b-uint32_t-i-uint8_t-j)
+- [`__builtin_riscv_cv_simd_sra_h`](#uint32_t-__builtin_riscv_cv_simd_sra_h-uint32_t-i-uint32_t-j)
+- [`__builtin_riscv_cv_simd_sra_b`](#uint32_t-__builtin_riscv_cv_simd_sra_b-uint32_t-i-uint32_t-j)
+- [`__builtin_riscv_cv_simd_sra_sc_h`](#uint32_t-__builtin_riscv_cv_simd_sra_sc_h-uint32_t-i-uint8_t-j)
+- [`__builtin_riscv_cv_simd_sra_sc_b`](#uint32_t-__builtin_riscv_cv_simd_sra_sc_b-uint32_t-i-uint8_t-j)
+- [`__builtin_riscv_cv_simd_sll_h`](#uint32_t-__builtin_riscv_cv_simd_sll_h-uint32_t-i-uint32_t-j)
+- [`__builtin_riscv_cv_simd_sll_b`](#uint32_t-__builtin_riscv_cv_simd_sll_b-uint32_t-i-uint32_t-j)
+- [`__builtin_riscv_cv_simd_sll_sc_h`](#uint32_t-__builtin_riscv_cv_simd_sll_sc_h-uint32_t-i-uint8_t-j)
+- [`__builtin_riscv_cv_simd_sll_sc_b`](#uint32_t-__builtin_riscv_cv_simd_sll_sc_b-uint32_t-i-uint8_t-j)
+- [`__builtin_riscv_cv_simd_or_h`](#uint32_t-__builtin_riscv_cv_simd_or_h-uint32_t-i-uint32_t-j)
+- [`__builtin_riscv_cv_simd_or_b`](#uint32_t-__builtin_riscv_cv_simd_or_b-uint32_t-i-uint32_t-j)
+- [`__builtin_riscv_cv_simd_or_sc_h`](#uint32_t-__builtin_riscv_cv_simd_or_sc_h-uint32_t-i-uint16_t-j)
+- [`__builtin_riscv_cv_simd_or_sc_b`](#uint32_t-__builtin_riscv_cv_simd_or_sc_b-uint32_t-i-uint8_t-j)
+- [`__builtin_riscv_cv_simd_xor_h`](#uint32_t-__builtin_riscv_cv_simd_xor_h-uint32_t-i-uint32_t-j)
+- [`__builtin_riscv_cv_simd_xor_b`](#uint32_t-__builtin_riscv_cv_simd_xor_b-uint32_t-i-uint32_t-j)
+- [`__builtin_riscv_cv_simd_xor_sc_h`](#uint32_t-__builtin_riscv_cv_simd_xor_sc_h-uint32_t-i-uint16_t-j)
+- [`__builtin_riscv_cv_simd_xor_sc_b`](#uint32_t-__builtin_riscv_cv_simd_xor_sc_b-uint32_t-i-uint8_t-j)
+- [`__builtin_riscv_cv_simd_and_h`](#uint32_t-__builtin_riscv_cv_simd_and_h-uint32_t-i-uint32_t-j)
+- [`__builtin_riscv_cv_simd_and_b`](#uint32_t-__builtin_riscv_cv_simd_and_b-uint32_t-i-uint32_t-j)
+- [`__builtin_riscv_cv_simd_and_sc_h`](#uint32_t-__builtin_riscv_cv_simd_and_sc_h-uint32_t-i-uint16_t-j)
+- [`__builtin_riscv_cv_simd_and_sc_b`](#uint32_t-__builtin_riscv_cv_simd_and_sc_b-uint32_t-i-uint8_t-j)
+- [`__builtin_riscv_cv_simd_abs_h`](#uint32_t-__builtin_riscv_cv_simd_abs_h-uint32_t-i)
+- [`__builtin_riscv_cv_simd_abs_b`](#uint32_t-__builtin_riscv_cv_simd_abs_b-uint32_t-i)
 
 **Note.*** The documentation of these instructions uses `op2`, to refer to `rs2` for vector operations and `rs2` or `Is2` for scalar replication instructions.
 
@@ -2118,12 +2119,12 @@ At the time of writing the SIMD architecture for 64-bit is not defined, so no bu
 
 **Applicability.** 32-bit cores.
 
-- [`int32_t __builtin_riscv_cv_simd_extract_h`](#int32_t-__builtin_riscv_cv_simd_extract_h-uint32_t-i-const-uint8_t-sel)
-- [`int32_t __builtin_riscv_cv_simd_extract_b`](#int32_t-__builtin_riscv_cv_simd_extract_b-uint32_t-i-const-uint8_t-sel)
-- [`uint32_t __builtin_riscv_cv_simd_extractu_h`](#uint32_t-__builtin_riscv_cv_simd_extractu_h-uint32_t-i-const-uint8_t-sel)
-- [`uint32_t __builtin_riscv_cv_simd_extractu_b`](#uint32_t-__builtin_riscv_cv_simd_extractu_b-uint32_t-i-const-uint8_t-sel)
-- [`uint32_t __builtin_riscv_cv_simd_insert_h`](#uint32_t-__builtin_riscv_cv_simd_insert_h-uint32_t-i-uint32_t-j-const-uint8_t-sel)
-- [`uint32_t __builtin_riscv_cv_simd_insert_b`](#uint32_t-__builtin_riscv_cv_simd_insert_b-uint32_t-i-uint32_t-j-const-uint8_t-sel)
+- [`__builtin_riscv_cv_simd_extract_h`](#int32_t-__builtin_riscv_cv_simd_extract_h-uint32_t-i-const-uint8_t-sel)
+- [`__builtin_riscv_cv_simd_extract_b`](#int32_t-__builtin_riscv_cv_simd_extract_b-uint32_t-i-const-uint8_t-sel)
+- [`__builtin_riscv_cv_simd_extractu_h`](#uint32_t-__builtin_riscv_cv_simd_extractu_h-uint32_t-i-const-uint8_t-sel)
+- [`__builtin_riscv_cv_simd_extractu_b`](#uint32_t-__builtin_riscv_cv_simd_extractu_b-uint32_t-i-const-uint8_t-sel)
+- [`__builtin_riscv_cv_simd_insert_h`](#uint32_t-__builtin_riscv_cv_simd_insert_h-uint32_t-i-uint32_t-j-const-uint8_t-sel)
+- [`__builtin_riscv_cv_simd_insert_b`](#uint32_t-__builtin_riscv_cv_simd_insert_b-uint32_t-i-uint32_t-j-const-uint8_t-sel)
 
 #### `int32_t __builtin_riscv_cv_simd_extract_h (uint32_t i, const uint8_t sel)`
 
@@ -2213,30 +2214,30 @@ At the time of writing the SIMD architecture for 64-bit is not defined, so no bu
 
 **Applicability.** 32-bit cores.
 
-- [`uint32_t __builtin_riscv_cv_simd_dotup_h`](#uint32_t-__builtin_riscv_cv_simd_dotup_h-uint32_t-i-uint32_t-j)
-- [`uint32_t __builtin_riscv_cv_simd_dotup_b`](#uint32_t-__builtin_riscv_cv_simd_dotup_b-uint32_t-i-uint32_t-j)
-- [`uint32_t __builtin_riscv_cv_simd_dotup_sc_h`](#uint32_t-__builtin_riscv_cv_simd_dotup_sc_h-uint32_t-i-uint16_t-j)
-- [`uint32_t __builtin_riscv_cv_simd_dotup_sc_b`](#uint32_t-__builtin_riscv_cv_simd_dotup_sc_b-uint32_t-i-uint8_t-j)
-- [`int32_t __builtin_riscv_cv_simd_dotusp_h`](#int32_t-__builtin_riscv_cv_simd_dotusp_h-uint32_t-i-uint32_t-j)
-- [`int32_t __builtin_riscv_cv_simd_dotusp_b`](#int32_t-__builtin_riscv_cv_simd_dotusp_b-uint32_t-i-uint32_t-j)
-- [`int32_t __builtin_riscv_cv_simd_dotusp_sc_h`](#int32_t-__builtin_riscv_cv_simd_dotusp_sc_h-uint32_t-i-int16_t-j)
-- [`int32_t __builtin_riscv_cv_simd_dotusp_sc_b`](#int32_t-__builtin_riscv_cv_simd_dotusp_sc_b-uint32_t-i-int8_t-j)
-- [`int32_t __builtin_riscv_cv_simd_dotsp_h`](#int32_t-__builtin_riscv_cv_simd_dotsp_h-uint32_t-i-uint32_t-j)
-- [`int32_t __builtin_riscv_cv_simd_dotsp_b`](#int32_t-__builtin_riscv_cv_simd_dotsp_b-uint32_t-i-uint32_t-j)
-- [`int32_t __builtin_riscv_cv_simd_dotsp_sc_h`](#int32_t-__builtin_riscv_cv_simd_dotsp_sc_h-uint32_t-i-int16_t-j)
-- [`int32_t __builtin_riscv_cv_simd_dotsp_sc_b`](#int32_t-__builtin_riscv_cv_simd_dotsp_sc_b-uint32_t-i-int8_t-j)
-- [`uint32_t __builtin_riscv_cv_simd_sdotup_h`](#uint32_t-__builtin_riscv_cv_simd_sdotup_h-uint32_t-i-uint32_t-j-uint32_t-k)
-- [`uint32_t __builtin_riscv_cv_simd_sdotup_b`](#uint32_t-__builtin_riscv_cv_simd_sdotup_b-uint32_t-i-uint32_t-j-uint32_t-k)
-- [`uint32_t __builtin_riscv_cv_simd_sdotup_sc_h`](#uint32_t-__builtin_riscv_cv_simd_sdotup_sc_h-uint32_t-i-uint16_t-j-uint32_t-k)
-- [`uint32_t __builtin_riscv_cv_simd_sdotup_sc_b`](#uint32_t-__builtin_riscv_cv_simd_sdotup_sc_b-uint32_t-i-uint8_t-j-uint32_t-k)
-- [`int32_t __builtin_riscv_cv_simd_sdotusp_h`](#int32_t-__builtin_riscv_cv_simd_sdotusp_h-uint32_t-i-uint32_t-j-int32_t-k)
-- [`int32_t __builtin_riscv_cv_simd_sdotusp_b`](#int32_t-__builtin_riscv_cv_simd_sdotusp_b-uint32_t-i-uint32_t-j-int32_t-k)
-- [`int32_t __builtin_riscv_cv_simd_sdotusp_sc_h`](#int32_t-__builtin_riscv_cv_simd_sdotusp_sc_h-uint32_t-i-int16_t-j-int32_t-k)
-- [`int32_t __builtin_riscv_cv_simd_sdotusp_sc_b`](#int32_t-__builtin_riscv_cv_simd_sdotusp_sc_b-uint32_t-i-int8_t-j-int32_t-k)
-- [`int32_t __builtin_riscv_cv_simd_sdotsp_h`](#int32_t-__builtin_riscv_cv_simd_sdotsp_h-uint32_t-i-uint32_t-j-int32_t-k)
-- [`int32_t __builtin_riscv_cv_simd_sdotsp_b`](#int32_t-__builtin_riscv_cv_simd_sdotsp_b-uint32_t-i-uint32_t-j-int32_t-k)
-- [`int32_t __builtin_riscv_cv_simd_sdotsp_sc_h`](#int32_t-__builtin_riscv_cv_simd_sdotsp_sc_h-uint32_t-i-int16_t-j-int32_t-k)
-- [`int32_t __builtin_riscv_cv_simd_sdotsp_sc_b`](#int32_t-__builtin_riscv_cv_simd_sdotsp_sc_b-uint32_t-i-int8_t-j-int32_t-k)
+- [`__builtin_riscv_cv_simd_dotup_h`](#uint32_t-__builtin_riscv_cv_simd_dotup_h-uint32_t-i-uint32_t-j)
+- [`__builtin_riscv_cv_simd_dotup_b`](#uint32_t-__builtin_riscv_cv_simd_dotup_b-uint32_t-i-uint32_t-j)
+- [`__builtin_riscv_cv_simd_dotup_sc_h`](#uint32_t-__builtin_riscv_cv_simd_dotup_sc_h-uint32_t-i-uint16_t-j)
+- [`__builtin_riscv_cv_simd_dotup_sc_b`](#uint32_t-__builtin_riscv_cv_simd_dotup_sc_b-uint32_t-i-uint8_t-j)
+- [`__builtin_riscv_cv_simd_dotusp_h`](#int32_t-__builtin_riscv_cv_simd_dotusp_h-uint32_t-i-uint32_t-j)
+- [`__builtin_riscv_cv_simd_dotusp_b`](#int32_t-__builtin_riscv_cv_simd_dotusp_b-uint32_t-i-uint32_t-j)
+- [`__builtin_riscv_cv_simd_dotusp_sc_h`](#int32_t-__builtin_riscv_cv_simd_dotusp_sc_h-uint32_t-i-int16_t-j)
+- [`__builtin_riscv_cv_simd_dotusp_sc_b`](#int32_t-__builtin_riscv_cv_simd_dotusp_sc_b-uint32_t-i-int8_t-j)
+- [`__builtin_riscv_cv_simd_dotsp_h`](#int32_t-__builtin_riscv_cv_simd_dotsp_h-uint32_t-i-uint32_t-j)
+- [`__builtin_riscv_cv_simd_dotsp_b`](#int32_t-__builtin_riscv_cv_simd_dotsp_b-uint32_t-i-uint32_t-j)
+- [`__builtin_riscv_cv_simd_dotsp_sc_h`](#int32_t-__builtin_riscv_cv_simd_dotsp_sc_h-uint32_t-i-int16_t-j)
+- [`__builtin_riscv_cv_simd_dotsp_sc_b`](#int32_t-__builtin_riscv_cv_simd_dotsp_sc_b-uint32_t-i-int8_t-j)
+- [`__builtin_riscv_cv_simd_sdotup_h`](#uint32_t-__builtin_riscv_cv_simd_sdotup_h-uint32_t-i-uint32_t-j-uint32_t-k)
+- [`__builtin_riscv_cv_simd_sdotup_b`](#uint32_t-__builtin_riscv_cv_simd_sdotup_b-uint32_t-i-uint32_t-j-uint32_t-k)
+- [`__builtin_riscv_cv_simd_sdotup_sc_h`](#uint32_t-__builtin_riscv_cv_simd_sdotup_sc_h-uint32_t-i-uint16_t-j-uint32_t-k)
+- [`__builtin_riscv_cv_simd_sdotup_sc_b`](#uint32_t-__builtin_riscv_cv_simd_sdotup_sc_b-uint32_t-i-uint8_t-j-uint32_t-k)
+- [`__builtin_riscv_cv_simd_sdotusp_h`](#int32_t-__builtin_riscv_cv_simd_sdotusp_h-uint32_t-i-uint32_t-j-int32_t-k)
+- [`__builtin_riscv_cv_simd_sdotusp_b`](#int32_t-__builtin_riscv_cv_simd_sdotusp_b-uint32_t-i-uint32_t-j-int32_t-k)
+- [`__builtin_riscv_cv_simd_sdotusp_sc_h`](#int32_t-__builtin_riscv_cv_simd_sdotusp_sc_h-uint32_t-i-int16_t-j-int32_t-k)
+- [`__builtin_riscv_cv_simd_sdotusp_sc_b`](#int32_t-__builtin_riscv_cv_simd_sdotusp_sc_b-uint32_t-i-int8_t-j-int32_t-k)
+- [`__builtin_riscv_cv_simd_sdotsp_h`](#int32_t-__builtin_riscv_cv_simd_sdotsp_h-uint32_t-i-uint32_t-j-int32_t-k)
+- [`__builtin_riscv_cv_simd_sdotsp_b`](#int32_t-__builtin_riscv_cv_simd_sdotsp_b-uint32_t-i-uint32_t-j-int32_t-k)
+- [`__builtin_riscv_cv_simd_sdotsp_sc_h`](#int32_t-__builtin_riscv_cv_simd_sdotsp_sc_h-uint32_t-i-int16_t-j-int32_t-k)
+- [`__builtin_riscv_cv_simd_sdotsp_sc_b`](#int32_t-__builtin_riscv_cv_simd_sdotsp_sc_b-uint32_t-i-int8_t-j-int32_t-k)
 
 **Note.*** The documentation of these instructions uses `op2`, to refer to `rs2` for vector operations and `rs2` or `Is2` for scalar replication instructions.
 
@@ -2708,16 +2709,16 @@ At the time of writing the SIMD architecture for 64-bit is not defined, so no bu
 
 **Applicability.** 32-bit cores.
 
-- [`uint32_t __builtin_riscv_cv_simd_shuffle_h`](#uint32_t-__builtin_riscv_cv_simd_shuffle_h-uint32_t--i-uint32_t-flgs)
-- [`uint32_t __builtin_riscv_cv_simd_shuffle_sci_h`](#uint32_t-__builtin_riscv_cv_simd_shuffle_sci_h-uint32_t-i-const-uint8_t-flgs)
-- [`uint32_t __builtin_riscv_cv_simd_shuffle_b`](#uint32_t-__builtin_riscv_cv_simd_shuffle_b-uint32_t-i-uint32_t-j)
-- [`uint32_t __builtin_riscv_cv_simd_shuffle_sci_b`](#uint32_t-__builtin_riscv_cv_simd_shuffle_sci_b-uint32_t-i-const-uint8_t-flgs)
-- [`uint32_t __builtin_riscv_cv_simd_shuffle2_h`](#uint32_t-__builtin_riscv_cv_simd_shuffle2_h-uint32_t-i-uint32_t-flgs-uint32_t-k)
-- [`uint32_t __builtin_riscv_cv_simd_shuffle2_b`](#uint32_t-__builtin_riscv_cv_simd_shuffle2_b-uint32_t-i-uint32_t-flgs-uint32_t-k)
-- [`uint32_t __builtin_riscv_cv_simd_pack`](#uint32_t-__builtin_riscv_cv_simd_pack-uint32_t-i-uint32_t-j)
-- [`uint32_t __builtin_riscv_cv_simd_pack_h`](#uint32_t-__builtin_riscv_cv_simd_pack_h-uint32_t-i-uint32_t-j)
-- [`uint32_t __builtin_riscv_cv_simd_packhi_b`](#uint32_t-__builtin_riscv_cv_simd_packhi_b-uint32_t-i-uint32_t-j-uint32_t-k)
-- [`uint32_t __builtin_riscv_cv_simd_packlo_b`](#uint32_t-__builtin_riscv_cv_simd_packlo_b-uint32_t-i-uint32_t-j-uint32_t-k)
+- [`__builtin_riscv_cv_simd_shuffle_h`](#uint32_t-__builtin_riscv_cv_simd_shuffle_h-uint32_t--i-uint32_t-flgs)
+- [`__builtin_riscv_cv_simd_shuffle_sci_h`](#uint32_t-__builtin_riscv_cv_simd_shuffle_sci_h-uint32_t-i-const-uint8_t-flgs)
+- [`__builtin_riscv_cv_simd_shuffle_b`](#uint32_t-__builtin_riscv_cv_simd_shuffle_b-uint32_t-i-uint32_t-j)
+- [`__builtin_riscv_cv_simd_shuffle_sci_b`](#uint32_t-__builtin_riscv_cv_simd_shuffle_sci_b-uint32_t-i-const-uint8_t-flgs)
+- [`__builtin_riscv_cv_simd_shuffle2_h`](#uint32_t-__builtin_riscv_cv_simd_shuffle2_h-uint32_t-i-uint32_t-flgs-uint32_t-k)
+- [`__builtin_riscv_cv_simd_shuffle2_b`](#uint32_t-__builtin_riscv_cv_simd_shuffle2_b-uint32_t-i-uint32_t-flgs-uint32_t-k)
+- [`__builtin_riscv_cv_simd_pack`](#uint32_t-__builtin_riscv_cv_simd_pack-uint32_t-i-uint32_t-j)
+- [`__builtin_riscv_cv_simd_pack_h`](#uint32_t-__builtin_riscv_cv_simd_pack_h-uint32_t-i-uint32_t-j)
+- [`__builtin_riscv_cv_simd_packhi_b`](#uint32_t-__builtin_riscv_cv_simd_packhi_b-uint32_t-i-uint32_t-j-uint32_t-k)
+- [`__builtin_riscv_cv_simd_packlo_b`](#uint32_t-__builtin_riscv_cv_simd_packlo_b-uint32_t-i-uint32_t-j-uint32_t-k)
 
 #### `uint32_t __builtin_riscv_cv_simd_shuffle_h (uint32_t  i, uint32_t flgs)`
 
@@ -2872,46 +2873,46 @@ At the time of writing the SIMD architecture for 64-bit is not defined, so no bu
 
 **Applicability.** 32-bit cores.
 
-- [`uint32_t __builtin_riscv_cv_simd_cmpeq_h`](#uint32_t-__builtin_riscv_cv_simd_cmpeq_h-uint32_t-i-uint32_t-j)
-- [`uint32_t __builtin_riscv_cv_simd_cmpeq_b`](#uint32_t-__builtin_riscv_cv_simd_cmpeq_b-uint32_t-i-uint32_t-j)
-- [`uint32_t __builtin_riscv_cv_simd_cmpeq_sc_h`](#uint32_t-__builtin_riscv_cv_simd_cmpeq_sc_h-uint32_t-i-int16_t-j)
-- [`uint32_t __builtin_riscv_cv_simd_cmpeq_sc_b`](#uint32_t-__builtin_riscv_cv_simd_cmpeq_sc_b-uint32_t-i-int8_t-j)
-- [`uint32_t __builtin_riscv_cv_simd_cmpne_h`](#uint32_t-__builtin_riscv_cv_simd_cmpne_h-uint32_t-i-uint32_t-j)
-- [`uint32_t __builtin_riscv_cv_simd_cmpne_b`](#uint32_t-__builtin_riscv_cv_simd_cmpne_b-uint32_t-i-uint32_t-j)
-- [`uint32_t __builtin_riscv_cv_simd_cmpne_sc_h`](#uint32_t-__builtin_riscv_cv_simd_cmpne_sc_h-uint32_t-i-int16_t-j)
-- [`uint32_t __builtin_riscv_cv_simd_cmpne_sc_b`](#uint32_t-__builtin_riscv_cv_simd_cmpne_sc_b-uint32_t-i-int8_t-j)
-- [`uint32_t __builtin_riscv_cv_simd_cmpgt_h`](#uint32_t-__builtin_riscv_cv_simd_cmpgt_h-uint32_t-i-uint32_t-j)
-- [`uint32_t __builtin_riscv_cv_simd_cmpgt_b`](#uint32_t-__builtin_riscv_cv_simd_cmpgt_b-uint32_t-i-uint32_t-j)
-- [`uint32_t __builtin_riscv_cv_simd_cmpgt_sc_h`](#uint32_t-__builtin_riscv_cv_simd_cmpgt_sc_h-uint32_t-i-int16_t-j)
-- [`uint32_t __builtin_riscv_cv_simd_cmpgt_sc_b`](#uint32_t-__builtin_riscv_cv_simd_cmpgt_sc_b-uint32_t-i-int8_t-j)
-- [`uint32_t __builtin_riscv_cv_simd_cmpge_h`](#uint32_t-__builtin_riscv_cv_simd_cmpge_h-uint32_t-i-uint32_t-j)
-- [`uint32_t __builtin_riscv_cv_simd_cmpge_b`](#uint32_t-__builtin_riscv_cv_simd_cmpge_b-uint32_t-i-uint32_t-j)
-- [`uint32_t __builtin_riscv_cv_simd_cmpge_sc_h`](#uint32_t-__builtin_riscv_cv_simd_cmpge_sc_h-uint32_t-i-int16_t-j)
-- [`uint32_t __builtin_riscv_cv_simd_cmpge_sc_b`](#uint32_t-__builtin_riscv_cv_simd_cmpge_sc_b-uint32_t-i-int8_t-j)
-- [`uint32_t __builtin_riscv_cv_simd_cmplt_h`](#uint32_t-__builtin_riscv_cv_simd_cmplt_h-uint32_t-i-uint32_t-j)
-- [`uint32_t __builtin_riscv_cv_simd_cmplt_b`](#uint32_t-__builtin_riscv_cv_simd_cmplt_b-uint32_t-i-uint32_t-j)
-- [`uint32_t __builtin_riscv_cv_simd_cmplt_sc_h`](#uint32_t-__builtin_riscv_cv_simd_cmplt_sc_h-uint32_t-i-int16_t-j)
-- [`uint32_t __builtin_riscv_cv_simd_cmplt_sc_b`](#uint32_t-__builtin_riscv_cv_simd_cmplt_sc_b-uint32_t-i-int8_t-j)
-- [`uint32_t __builtin_riscv_cv_simd_cmple_h`](#uint32_t-__builtin_riscv_cv_simd_cmple_h-uint32_t-i-uint32_t-j)
-- [`uint32_t __builtin_riscv_cv_simd_cmple_b`](#uint32_t-__builtin_riscv_cv_simd_cmple_b-uint32_t-i-uint32_t-j)
-- [`uint32_t __builtin_riscv_cv_simd_cmple_sc_h`](#uint32_t-__builtin_riscv_cv_simd_cmple_sc_h-uint32_t-i-int16_t-j)
-- [`uint32_t __builtin_riscv_cv_simd_cmple_sc_b`](#uint32_t-__builtin_riscv_cv_simd_cmple_sc_b-uint32_t-i-int8_t-j)
-- [`uint32_t __builtin_riscv_cv_simd_cmpgtu_h`](#uint32_t-__builtin_riscv_cv_simd_cmpgtu_h-uint32_t-i-uint32_t-j)
-- [`uint32_t __builtin_riscv_cv_simd_cmpgtu_b`](#uint32_t-__builtin_riscv_cv_simd_cmpgtu_b-uint32_t-i-uint32_t-j)
-- [`uint32_t __builtin_riscv_cv_simd_cmpgtu_sc_h`](#uint32_t-__builtin_riscv_cv_simd_cmpgtu_sc_h-uint32_t-i-uint16_t-j)
-- [`uint32_t __builtin_riscv_cv_simd_cmpgtu_sc_b`](#uint32_t-__builtin_riscv_cv_simd_cmpgtu_sc_b-uint32_t-i-uint8_t-j)
-- [`uint32_t __builtin_riscv_cv_simd_cmpgeu_h`](#uint32_t-__builtin_riscv_cv_simd_cmpgeu_h-uint32_t-i-uint32_t-j)
-- [`uint32_t __builtin_riscv_cv_simd_cmpgeu_b`](#uint32_t-__builtin_riscv_cv_simd_cmpgeu_b-uint32_t-i-uint32_t-j)
-- [`uint32_t __builtin_riscv_cv_simd_cmpgeu_sc_h`](#uint32_t-__builtin_riscv_cv_simd_cmpgeu_sc_h-uint32_t-i-uint16_t-j)
-- [`uint32_t __builtin_riscv_cv_simd_cmpgeu_sc_b`](#uint32_t-__builtin_riscv_cv_simd_cmpgeu_sc_b-uint32_t-i-uint8_t-j)
-- [`uint32_t __builtin_riscv_cv_simd_cmpltu_h`](#uint32_t-__builtin_riscv_cv_simd_cmpltu_h-uint32_t-i-uint32_t-j)
-- [`uint32_t __builtin_riscv_cv_simd_cmpltu_b`](#uint32_t-__builtin_riscv_cv_simd_cmpltu_b-uint32_t-i-uint32_t-j)
-- [`uint32_t __builtin_riscv_cv_simd_cmpltu_sc_h`](#uint32_t-__builtin_riscv_cv_simd_cmpltu_sc_h-uint32_t-i-uint16_t-j)
-- [`uint32_t __builtin_riscv_cv_simd_cmpltu_sc_b`](#uint32_t-__builtin_riscv_cv_simd_cmpltu_sc_b-uint32_t-i-uint8_t-j)
-- [`uint32_t __builtin_riscv_cv_simd_cmpleu_h`](#uint32_t-__builtin_riscv_cv_simd_cmpleu_h-uint32_t-i-uint32_t-j)
-- [`uint32_t __builtin_riscv_cv_simd_cmpleu_b`](#uint32_t-__builtin_riscv_cv_simd_cmpleu_b-uint32_t-i-uint32_t-j)
-- [`uint32_t __builtin_riscv_cv_simd_cmpleu_sc_h`](#uint32_t-__builtin_riscv_cv_simd_cmpleu_sc_h-uint32_t-i-uint16_t-j)
-- [`uint32_t __builtin_riscv_cv_simd_cmpleu_sc_b`](#uint32_t-__builtin_riscv_cv_simd_cmpleu_sc_b-uint32_t-i-uint8_t-j)
+- [`__builtin_riscv_cv_simd_cmpeq_h`](#uint32_t-__builtin_riscv_cv_simd_cmpeq_h-uint32_t-i-uint32_t-j)
+- [`__builtin_riscv_cv_simd_cmpeq_b`](#uint32_t-__builtin_riscv_cv_simd_cmpeq_b-uint32_t-i-uint32_t-j)
+- [`__builtin_riscv_cv_simd_cmpeq_sc_h`](#uint32_t-__builtin_riscv_cv_simd_cmpeq_sc_h-uint32_t-i-int16_t-j)
+- [`__builtin_riscv_cv_simd_cmpeq_sc_b`](#uint32_t-__builtin_riscv_cv_simd_cmpeq_sc_b-uint32_t-i-int8_t-j)
+- [`__builtin_riscv_cv_simd_cmpne_h`](#uint32_t-__builtin_riscv_cv_simd_cmpne_h-uint32_t-i-uint32_t-j)
+- [`__builtin_riscv_cv_simd_cmpne_b`](#uint32_t-__builtin_riscv_cv_simd_cmpne_b-uint32_t-i-uint32_t-j)
+- [`__builtin_riscv_cv_simd_cmpne_sc_h`](#uint32_t-__builtin_riscv_cv_simd_cmpne_sc_h-uint32_t-i-int16_t-j)
+- [`__builtin_riscv_cv_simd_cmpne_sc_b`](#uint32_t-__builtin_riscv_cv_simd_cmpne_sc_b-uint32_t-i-int8_t-j)
+- [`__builtin_riscv_cv_simd_cmpgt_h`](#uint32_t-__builtin_riscv_cv_simd_cmpgt_h-uint32_t-i-uint32_t-j)
+- [`__builtin_riscv_cv_simd_cmpgt_b`](#uint32_t-__builtin_riscv_cv_simd_cmpgt_b-uint32_t-i-uint32_t-j)
+- [`__builtin_riscv_cv_simd_cmpgt_sc_h`](#uint32_t-__builtin_riscv_cv_simd_cmpgt_sc_h-uint32_t-i-int16_t-j)
+- [`__builtin_riscv_cv_simd_cmpgt_sc_b`](#uint32_t-__builtin_riscv_cv_simd_cmpgt_sc_b-uint32_t-i-int8_t-j)
+- [`__builtin_riscv_cv_simd_cmpge_h`](#uint32_t-__builtin_riscv_cv_simd_cmpge_h-uint32_t-i-uint32_t-j)
+- [`__builtin_riscv_cv_simd_cmpge_b`](#uint32_t-__builtin_riscv_cv_simd_cmpge_b-uint32_t-i-uint32_t-j)
+- [`__builtin_riscv_cv_simd_cmpge_sc_h`](#uint32_t-__builtin_riscv_cv_simd_cmpge_sc_h-uint32_t-i-int16_t-j)
+- [`__builtin_riscv_cv_simd_cmpge_sc_b`](#uint32_t-__builtin_riscv_cv_simd_cmpge_sc_b-uint32_t-i-int8_t-j)
+- [`__builtin_riscv_cv_simd_cmplt_h`](#uint32_t-__builtin_riscv_cv_simd_cmplt_h-uint32_t-i-uint32_t-j)
+- [`__builtin_riscv_cv_simd_cmplt_b`](#uint32_t-__builtin_riscv_cv_simd_cmplt_b-uint32_t-i-uint32_t-j)
+- [`__builtin_riscv_cv_simd_cmplt_sc_h`](#uint32_t-__builtin_riscv_cv_simd_cmplt_sc_h-uint32_t-i-int16_t-j)
+- [`__builtin_riscv_cv_simd_cmplt_sc_b`](#uint32_t-__builtin_riscv_cv_simd_cmplt_sc_b-uint32_t-i-int8_t-j)
+- [`__builtin_riscv_cv_simd_cmple_h`](#uint32_t-__builtin_riscv_cv_simd_cmple_h-uint32_t-i-uint32_t-j)
+- [`__builtin_riscv_cv_simd_cmple_b`](#uint32_t-__builtin_riscv_cv_simd_cmple_b-uint32_t-i-uint32_t-j)
+- [`__builtin_riscv_cv_simd_cmple_sc_h`](#uint32_t-__builtin_riscv_cv_simd_cmple_sc_h-uint32_t-i-int16_t-j)
+- [`__builtin_riscv_cv_simd_cmple_sc_b`](#uint32_t-__builtin_riscv_cv_simd_cmple_sc_b-uint32_t-i-int8_t-j)
+- [`__builtin_riscv_cv_simd_cmpgtu_h`](#uint32_t-__builtin_riscv_cv_simd_cmpgtu_h-uint32_t-i-uint32_t-j)
+- [`__builtin_riscv_cv_simd_cmpgtu_b`](#uint32_t-__builtin_riscv_cv_simd_cmpgtu_b-uint32_t-i-uint32_t-j)
+- [`__builtin_riscv_cv_simd_cmpgtu_sc_h`](#uint32_t-__builtin_riscv_cv_simd_cmpgtu_sc_h-uint32_t-i-uint16_t-j)
+- [`__builtin_riscv_cv_simd_cmpgtu_sc_b`](#uint32_t-__builtin_riscv_cv_simd_cmpgtu_sc_b-uint32_t-i-uint8_t-j)
+- [`__builtin_riscv_cv_simd_cmpgeu_h`](#uint32_t-__builtin_riscv_cv_simd_cmpgeu_h-uint32_t-i-uint32_t-j)
+- [`__builtin_riscv_cv_simd_cmpgeu_b`](#uint32_t-__builtin_riscv_cv_simd_cmpgeu_b-uint32_t-i-uint32_t-j)
+- [`__builtin_riscv_cv_simd_cmpgeu_sc_h`](#uint32_t-__builtin_riscv_cv_simd_cmpgeu_sc_h-uint32_t-i-uint16_t-j)
+- [`__builtin_riscv_cv_simd_cmpgeu_sc_b`](#uint32_t-__builtin_riscv_cv_simd_cmpgeu_sc_b-uint32_t-i-uint8_t-j)
+- [`__builtin_riscv_cv_simd_cmpltu_h`](#uint32_t-__builtin_riscv_cv_simd_cmpltu_h-uint32_t-i-uint32_t-j)
+- [`__builtin_riscv_cv_simd_cmpltu_b`](#uint32_t-__builtin_riscv_cv_simd_cmpltu_b-uint32_t-i-uint32_t-j)
+- [`__builtin_riscv_cv_simd_cmpltu_sc_h`](#uint32_t-__builtin_riscv_cv_simd_cmpltu_sc_h-uint32_t-i-uint16_t-j)
+- [`__builtin_riscv_cv_simd_cmpltu_sc_b`](#uint32_t-__builtin_riscv_cv_simd_cmpltu_sc_b-uint32_t-i-uint8_t-j)
+- [`__builtin_riscv_cv_simd_cmpleu_h`](#uint32_t-__builtin_riscv_cv_simd_cmpleu_h-uint32_t-i-uint32_t-j)
+- [`__builtin_riscv_cv_simd_cmpleu_b`](#uint32_t-__builtin_riscv_cv_simd_cmpleu_b-uint32_t-i-uint32_t-j)
+- [`__builtin_riscv_cv_simd_cmpleu_sc_h`](#uint32_t-__builtin_riscv_cv_simd_cmpleu_sc_h-uint32_t-i-uint16_t-j)
+- [`__builtin_riscv_cv_simd_cmpleu_sc_b`](#uint32_t-__builtin_riscv_cv_simd_cmpleu_sc_b-uint32_t-i-uint8_t-j)
 
 #### `uint32_t __builtin_riscv_cv_simd_cmpeq_h (uint32_t i, uint32_t j)`
 
@@ -3683,10 +3684,10 @@ At the time of writing the SIMD architecture for 64-bit is not defined, so no bu
 
 **Applicability.** 32-bit cores.
 
-- [`uint32_t __builtin_riscv_cv_simd_cplxmul_r`](#uint32_t-__builtin_riscv_cv_simd_cplxmul_r-uint32_t-i-uint32_t-j-uint32_t-k-const-uint8_t-shft)
-- [`uint32_t __builtin_riscv_cv_simd_cplxmul_i`](#uint32_t-__builtin_riscv_cv_simd_cplxmul_i-uint32_t-i-uint32_t-j-uint32_t-k-const-uint8_t-shft)
-- [`uint32_t __builtin_riscv_cv_simd_cplxconj`](#uint32_t-__builtin_riscv_cv_simd_cplxconj-uint32_t-i)
-- [`uint32_t __builtin_riscv_cv_simd_subrotmj`](#uint32_t-__builtin_riscv_cv_simd_subrotmj-uint32_t--i-uint32_t-j-const-uint8_t-shft)
+- [`__builtin_riscv_cv_simd_cplxmul_r`](#uint32_t-__builtin_riscv_cv_simd_cplxmul_r-uint32_t-i-uint32_t-j-uint32_t-k-const-uint8_t-shft)
+- [`__builtin_riscv_cv_simd_cplxmul_i`](#uint32_t-__builtin_riscv_cv_simd_cplxmul_i-uint32_t-i-uint32_t-j-uint32_t-k-const-uint8_t-shft)
+- [`__builtin_riscv_cv_simd_cplxconj`](#uint32_t-__builtin_riscv_cv_simd_cplxconj-uint32_t-i)
+- [`__builtin_riscv_cv_simd_subrotmj`](#uint32_t-__builtin_riscv_cv_simd_subrotmj-uint32_t--i-uint32_t-j-const-uint8_t-shft)
 
 **Note.** The complex addition and subtraction operations are specialized versions of the SIMD half word addition and subraction described in [SIMD ALU operations (32-bit)](#simd-alu-operations-32-bit) above.
 
@@ -3774,22 +3775,21 @@ At the time of writing the SIMD architecture for 64-bit is not defined, so no bu
 ### PULP bit manipulation builtins (32-bit)
 
 **Applicability.** 32-bit cores.
-
-- [`int32_t __builtin_riscv_cv_bitmanip_extract`](#int32_t-__builtin_riscv_cv_bitmanip_extract-uint32_t--i-uint16_t-range)
-- [`uint32_t __builtin_riscv_cv_bitmanip_extractu`](#uint32_t-__builtin_riscv_cv_bitmanip_extractu-uint32_t-i-uint16_t-range)
-- [`uint32_t __builtin_riscv_cv_bitmanip_insert(uint32_t i, uint16_t range, uint32_t  k)`](#uint32_t-__builtin_riscv_cv_bitmanip_insertuint32_t-i-uint16_t-range-uint32_t--k)
-- [`uint32_t __builtin_riscv_cv_bitmanip_bclr`](#uint32_t-__builtin_riscv_cv_bitmanip_bclr-uint32_t-i-uint16_t-range)
-- [`uint32_t __builtin_riscv_cv_bitmanip_bset`](#uint32_t-__builtin_riscv_cv_bitmanip_bset-uint32_t-i-uint16_t-range)
-- [`uint8_t __builtin_riscv_cv_bitmanip_ff1`](#uint8_t-__builtin_riscv_cv_bitmanip_ff1-uint32_t-i)
-- [`uint8_t __builtin_riscv_cv_bitmanip_fl1`](#uint8_t-__builtin_riscv_cv_bitmanip_fl1-uint32_t-i)
-- [`uint8_t __builtin_riscv_cv_bitmanip_clb`](#uint8_t-__builtin_riscv_cv_bitmanip_clb-uint32_t-i)
-- [`uint8_t __builtin_riscv_cv_bitmanip_cnt`](#uint8_t-__builtin_riscv_cv_bitmanip_cnt-uint32_t-i)
-- [`uint32_t __builtin_riscv_cv_bitmanip_ror`](#uint32_t-__builtin_riscv_cv_bitmanip_ror-uint32_t-i-uint32_t-j)
-- [`uint32_t __builtin_riscv_cv_bitmanip_bitrev`](#uint32_t-__builtin_riscv_cv_bitmanip_bitrev-uint32_t-i-uint8_t-pts-uint8_t-radix)
+- [`__builtin_riscv_cv_bitmanip_extract`](#int32_t-__builtin_riscv_cv_bitmanip_extract-int32_t--i-uint16_t-range)
+- [`__builtin_riscv_cv_bitmanip_extractu`](#uint32_t-__builtin_riscv_cv_bitmanip_extractu-uint32_t-i-uint16_t-range)
+- [`__builtin_riscv_cv_bitmanip_insert`](#uint32_t-__builtin_riscv_cv_bitmanip_insertuint32_t-i-uint16_t-range-uint32_t--k)
+- [`__builtin_riscv_cv_bitmanip_bclr`](#uint32_t-__builtin_riscv_cv_bitmanip_bclr-uint32_t-i-uint16_t-range)
+- [`__builtin_riscv_cv_bitmanip_bset`](#uint32_t-__builtin_riscv_cv_bitmanip_bset-uint32_t-i-uint16_t-range)
+- [`__builtin_riscv_cv_bitmanip_ff1`](#uint8_t-__builtin_riscv_cv_bitmanip_ff1-uint32_t-i)
+- [`__builtin_riscv_cv_bitmanip_fl1`](#uint8_t-__builtin_riscv_cv_bitmanip_fl1-uint32_t-i)
+- [`__builtin_riscv_cv_bitmanip_clb`](#uint8_t-__builtin_riscv_cv_bitmanip_clb-uint32_t-i)
+- [`__builtin_riscv_cv_bitmanip_cnt`](#uint8_t-__builtin_riscv_cv_bitmanip_cnt-uint32_t-i)
+- [`__builtin_riscv_cv_bitmanip_ror`](#uint32_t-__builtin_riscv_cv_bitmanip_ror-uint32_t-i-uint32_t-j)
+- [`__builtin_riscv_cv_bitmanip_bitrev`](#uint32_t-__builtin_riscv_cv_bitmanip_bitrev-uint32_t-i-uint8_t-pts-uint8_t-radix)
 
 **Note:** Some of these functions modify the destination register, so need the value passed by reference, although for convenience the modfied value is returned as result.
 
-#### `int32_t __builtin_riscv_cv_bitmanip_extract (uint32_t  i, uint16_t range)`
+#### `int32_t __builtin_riscv_cv_bitmanip_extract (int32_t  i, uint16_t range)`
 
 Case a) range is a constant
 - result: `rD`
@@ -3837,7 +3837,7 @@ or case b)
         cv.extractur  rD,rs1,rs2
 ```
 
-#### `uint32_t __builtin_riscv_cv_bitmanip_insert(uint32_t i, uint16_t range, uint32_t  k)`
+#### `uint32_t __builtin_riscv_cv_bitmanip_insert (uint32_t i, uint16_t range, uint32_t  k)`
 
 Case a) range is a constant and `(range[9:5] + range [4:0]) <= 32`
 - result, k: `rD`
@@ -3990,7 +3990,7 @@ At the time of writing the bit manipulation architecture for 64-bit is not defin
 
 **Applicability.** 32-bit cores.
 
-- [`uint32_t __builtin_riscv_cv_elw_elw`](#uint32_t-__builtin_riscv_cv_elw_elw-uint32_t-*loc)
+- [`__builtin_riscv_cv_elw_elw`](#uint32_t-__builtin_riscv_cv_elw_elw-uint32_t-*loc)
 
 #### `uint32_t __builtin_riscv_cv_elw_elw (uint32_t *loc)`
 
