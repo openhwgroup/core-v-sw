@@ -2481,7 +2481,7 @@ _Argument/result mapping:_
 _Generated assembler:_
 
 ```gas
-        cv.dotup.h  rD,rs1,rs2
+        cv.sdotup.h  rD,rs1,rs2
 ```
 
 #### `uint32_t __builtin_riscv_cv_simd_sdotup_b (uint32_t i, uint32_t j, uint32_t k)`
@@ -2494,7 +2494,7 @@ _Argument/result mapping:_
 _Generated assembler:_
 
 ```gas
-        cv.dotup.b  rD,rs1,rs2
+        cv.sdotup.b  rD,rs1,rs2
 ```
 
 #### `uint32_t __builtin_riscv_cv_simd_sdotup_sc_h (uint32_t i, uint16_t j, uint32_t k)`
@@ -2515,11 +2515,11 @@ _Generated assembler:_
 
 Case a)
 ```gas
-        cv.dotup.sci.h  rD,rs1,Is2
+        cv.sdotup.sci.h  rD,rs1,Is2
 ```
 or case b)
 ```gas
-        cv.dotup.sc.h  rD,rs1,rs2
+        cv.sdotup.sc.h  rD,rs1,rs2
 ```
 
 #### `uint32_t __builtin_riscv_cv_simd_sdotup_sc_b (uint32_t i, uint8_t j, uint32_t k)`
@@ -2540,11 +2540,11 @@ _Generated assembler:_
 
 Case a)
 ```gas
-        cv.dotup.sci.b  rD,rs1,Is2
+        cv.sdotup.sci.b  rD,rs1,Is2
 ```
 or case b)
 ```gas
-        cv.dotup.sc.b  rD,rs1,rs2
+        cv.sdotup.sc.b  rD,rs1,rs2
 ```
 
 #### `int32_t __builtin_riscv_cv_simd_sdotusp_h (uint32_t i, uint32_t j, int32_t k)`
@@ -2557,7 +2557,7 @@ _Argument/result mapping:_
 _Generated assembler:_
 
 ```gas
-        cv.dotusp.h  rD,rs1,rs2
+        cv.sdotusp.h  rD,rs1,rs2
 ```
 
 #### `int32_t __builtin_riscv_cv_simd_sdotusp_b (uint32_t i, uint32_t j, int32_t k)`
@@ -2570,7 +2570,7 @@ _Argument/result mapping:_
 _Generated assembler:_
 
 ```gas
-        cv.dotusp.b  rD,rs1,rs2
+        cv.sdotusp.b  rD,rs1,rs2
 ```
 
 #### `int32_t __builtin_riscv_cv_simd_sdotusp_sc_h (uint32_t i, int16_t j, int32_t k)`
@@ -2591,11 +2591,11 @@ _Generated assembler:_
 
 Case a)
 ```gas
-        cv.dotusp.sci.h  rD,rs1,Is2
+        cv.sdotusp.sci.h  rD,rs1,Is2
 ```
 or case b)
 ```gas
-        cv.dotusp.sc.h  rD,rs1,rs2
+        cv.sdotusp.sc.h  rD,rs1,rs2
 ```
 
 #### `int32_t __builtin_riscv_cv_simd_sdotusp_sc_b (uint32_t i, int8_t j, int32_t k)`
@@ -2616,11 +2616,11 @@ _Generated assembler:_
 
 Case a)
 ```gas
-        cv.dotusp.sci.b  rD,rs1,Is2
+        cv.sdotusp.sci.b  rD,rs1,Is2
 ```
 or case b)
 ```gas
-        cv.dotusp.sc.b  rD,rs1,rs2
+        cv.sdotusp.sc.b  rD,rs1,rs2
 ```
 
 #### `int32_t __builtin_riscv_cv_simd_sdotsp_h (uint32_t i, uint32_t j, int32_t k)`
@@ -2633,7 +2633,7 @@ _Argument/result mapping:_
 _Generated assembler:_
 
 ```gas
-        cv.dotsp.h  rD,rs1,rs2
+        cv.sdotsp.h  rD,rs1,rs2
 ```
 
 #### `int32_t __builtin_riscv_cv_simd_sdotsp_b (uint32_t i, uint32_t j, int32_t k)`
@@ -2646,7 +2646,7 @@ _Argument/result mapping:_
 _Generated assembler:_
 
 ```gas
-        cv.dotsp.b  rD,rs1,rs2
+        cv.sdotsp.b  rD,rs1,rs2
 ```
 
 #### `int32_t __builtin_riscv_cv_simd_sdotsp_sc_h (uint32_t i, int16_t j, int32_t k)`
@@ -2667,11 +2667,11 @@ _Generated assembler:_
 
 Case a)
 ```gas
-        cv.dotsp.sci.h  rD,rs1,Is2
+        cv.sdotsp.sci.h  rD,rs1,Is2
 ```
 or case b)
 ```gas
-        cv.dotsp.sc.h  rD,rs1,rs2
+        cv.sdotsp.sc.h  rD,rs1,rs2
 ```
 
 #### `int32_t __builtin_riscv_cv_simd_sdotsp_sc_b (uint32_t i, int8_t j, int32_t k)`
@@ -2692,11 +2692,11 @@ _Generated assembler:_
 
 Case a)
 ```gas
-        cv.dotsp.sci.b  rD,rs1,Is2
+        cv.sdotsp.sci.b  rD,rs1,Is2
 ```
 or case b)
 ```gas
-        cv.dotsp.sc.b  rD,rs1,rs2
+        cv.sdotsp.sc.b  rD,rs1,rs2
 ```
 
 ### SIMD dot product operations (64-bit)
