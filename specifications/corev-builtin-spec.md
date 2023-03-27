@@ -1,8 +1,12 @@
-### CORE-V builtin names
+# OpenHW specification: CORE-V builtin names
+<!-- SPDL-License-Identifier: CC-BY-SA-4.0 -->
 
 ## Index
 
-- [History](#history)
+- [Front matter](#front-matter)
+  - [Revision history](#revision-history)
+  - [License](#License)
+  - [Copyright](#copyright)
 - [Executive Summary](#executive-summary)
 - [Design principles](#design-principles)
   - [Using vector types](#using-vector-types)
@@ -42,20 +46,31 @@
   - [Event load word builtins (32-bit)](#event-load-word-builtins-32-bit)
   - [Event load word builtins (64-bit)](#event-load-word-builtins-64-bit)
 
-## History
+## Front matter
+
+### Revision history
 
 | Date        | Version | Notes                                                 |
 | :---------- | :------ | :---------------------------------------------------- |
-| 15 Dec 2022 | 0.1     | First draft for review.                               |
+| 27 Mar 2023 | 0.9     | Final draft with small corrections to builtins and    |
+|             |         | official OpenHW template.                             |
+| 23 Feb 2023 | 0.5     | Clean up tables of links, correct bitmanip extract.   |
+| 16 Feb 2023 | 0.4     | Fourth draft incorporating Pascal Gouedo comments.    |
+| 13 Feb 2023 | 0.3     | Third draft after feedback from the GCC               |
+|             |         | implementation team.                                  |
 | 22 Jan 2023 | 0.2     | Second draft after view and Software TG discussion.   |
 |             |         | - naming to match upstream convention;                |
 |             |         | - naming to include the ISA extension name;           |
 |             |         | - pass by reference only when loading a value;        |
 |             |         | - pseudo-overloading to allow 32- and 64-bit support; |
-| 13 Feb 2023 | 0.3     | Third draft after feedback from the GCC               |
-|             |         | implementation team.                                  |
-| 16 Feb 2023 | 0.4     | Fourth draft incorporating Pascal Gouedo comments.    |
-| 23 Feb 2023 | 0.5     | Clean up tables of links, correct bitmanip extract.   |
+| 15 Dec 2022 | 0.1     | First draft for review.                               |
+
+### License
+
+This document is licensed under a Creative Commons Attribution Share Alike 4.0 International license.  See the [full legal code](https://creativecommons.org/licenses/by-sa/4.0/legalcode).
+
+### Copyright
+Copyright (C) 2023 OpenHW Group. You may use, copy, modify, and distribute this work under the terms of the License, subject to the conditions specified in the License.
 
 ## Executive Summary
 
@@ -980,6 +995,8 @@ It is anticipated that 64-bit cores may wish to define ALU operations by analogy
 - [`__builtin_riscv_cv_simd_and_sc_b`](#uint32_t-__builtin_riscv_cv_simd_and_sc_b-uint32_t-i-uint8_t-j)
 - [`__builtin_riscv_cv_simd_abs_h`](#uint32_t-__builtin_riscv_cv_simd_abs_h-uint32_t-i)
 - [`__builtin_riscv_cv_simd_abs_b`](#uint32_t-__builtin_riscv_cv_simd_abs_b-uint32_t-i)
+- [`__builtin_riscv_cv_simd_neg_h`](#uint32_t-__builtin_riscv_cv_simd_neg_h-uint32_t-i)
+- [`__builtin_riscv_cv_simd_neg_b`](#uint32_t-__builtin_riscv_cv_simd_neg_b-uint32_t-i)
 
 **Note.*** The documentation of these instructions uses `op2`, to refer to `rs2` for vector operations and `rs2` or `Is2` for scalar replication instructions.
 
@@ -2109,6 +2126,34 @@ _Generated assembler:_
         cv.abs.b  rD,rs1
 ```
 
+#### `uint32_t __builtin_riscv_cv_simd_neg_h (uint32_t i)`
+
+There is no `cv.neg.h` instruction, but as a convenience, we provide this builtin using `cv.sub.h`.
+
+_Argument/result mapping:_
+- result: `rD`
+- i: `rs2`
+
+_Generated assembler:_
+
+```gas
+        cv.sub.h  rD,zero,rs2
+```
+
+#### `uint32_t __builtin_riscv_cv_simd_neg_b (uint32_t i)`
+
+There is no `cv.neg.b` instruction, but as a convenience, we provide this builtin using `cv.sub.b`.
+
+_Argument/result mapping:_
+- result: `rD`
+- i: `rs2`
+
+_Generated assembler:_
+
+```gas
+        cv.sub.b  rD,zero,rs2
+```
+
 ### SIMD ALU operations (64-bit)
 
 **Applicability.** 64-bit cores.
@@ -2715,8 +2760,8 @@ At the time of writing the SIMD architecture for 64-bit is not defined, so no bu
 - [`__builtin_riscv_cv_simd_shuffle_sci_b`](#uint32_t-__builtin_riscv_cv_simd_shuffle_sci_b-uint32_t-i-const-uint8_t-flgs)
 - [`__builtin_riscv_cv_simd_shuffle2_h`](#uint32_t-__builtin_riscv_cv_simd_shuffle2_h-uint32_t-i-uint32_t-flgs-uint32_t-k)
 - [`__builtin_riscv_cv_simd_shuffle2_b`](#uint32_t-__builtin_riscv_cv_simd_shuffle2_b-uint32_t-i-uint32_t-flgs-uint32_t-k)
-- [`__builtin_riscv_cv_simd_pack`](#uint32_t-__builtin_riscv_cv_simd_pack-uint32_t-i-uint32_t-j)
-- [`__builtin_riscv_cv_simd_pack_h`](#uint32_t-__builtin_riscv_cv_simd_pack_h-uint32_t-i-uint32_t-j)
+- [`__builtin_riscv_cv_simd_packhi_h`](#uint32_t-__builtin_riscv_cv_simd_packhi_h-uint32_t-i-uint32_t-j)
+- [`__builtin_riscv_cv_simd_packlo_h`](#uint32_t-__builtin_riscv_cv_simd_packlo_h-uint32_t-i-uint32_t-j)
 - [`__builtin_riscv_cv_simd_packhi_b`](#uint32_t-__builtin_riscv_cv_simd_packhi_b-uint32_t-i-uint32_t-j-uint32_t-k)
 - [`__builtin_riscv_cv_simd_packlo_b`](#uint32_t-__builtin_riscv_cv_simd_packlo_b-uint32_t-i-uint32_t-j-uint32_t-k)
 
@@ -2807,21 +2852,7 @@ _Generated assembler:_
         cv.shuffle2.b  rD,rs1,rs2
 ```
 
-#### `uint32_t __builtin_riscv_cv_simd_pack (uint32_t i, uint32_t j)`
-
-_Argument/result mapping:_
-
-- result: `rD`
-- i: `rs1`
-- j: `rs2`
-
-_Generated assembler:_
-
-```gas
-        cv.pack  rD,rs1,rs2
-```
-
-#### `uint32_t __builtin_riscv_cv_simd_pack_h (uint32_t i, uint32_t j)`
+#### `uint32_t __builtin_riscv_cv_simd_packhi_h (uint32_t i, uint32_t j)`
 
 _Argument/result mapping:_
 
@@ -2833,6 +2864,20 @@ _Generated assembler:_
 
 ```gas
         cv.pack.h  rD,rs1,rs2
+```
+
+#### `uint32_t __builtin_riscv_cv_simd_packlo_h (uint32_t i, uint32_t j)`
+
+_Argument/result mapping:_
+
+- result: `rD`
+- i: `rs1`
+- j: `rs2`
+
+_Generated assembler:_
+
+```gas
+        cv.pack  rD,rs1,rs2
 ```
 
 #### `uint32_t __builtin_riscv_cv_simd_packhi_b (uint32_t i, uint32_t j, uint32_t k)`
