@@ -980,6 +980,8 @@ It is anticipated that 64-bit cores may wish to define ALU operations by analogy
 - [`__builtin_riscv_cv_simd_and_sc_b`](#uint32_t-__builtin_riscv_cv_simd_and_sc_b-uint32_t-i-uint8_t-j)
 - [`__builtin_riscv_cv_simd_abs_h`](#uint32_t-__builtin_riscv_cv_simd_abs_h-uint32_t-i)
 - [`__builtin_riscv_cv_simd_abs_b`](#uint32_t-__builtin_riscv_cv_simd_abs_b-uint32_t-i)
+- [`__builtin_riscv_cv_simd_neg_h`](#uint32_t-__builtin_riscv_cv_simd_neg_h-uint32_t-i)
+- [`__builtin_riscv_cv_simd_neg_b`](#uint32_t-__builtin_riscv_cv_simd_neg_b-uint32_t-i)
 
 **Note.*** The documentation of these instructions uses `op2`, to refer to `rs2` for vector operations and `rs2` or `Is2` for scalar replication instructions.
 
@@ -2109,6 +2111,34 @@ _Generated assembler:_
         cv.abs.b  rD,rs1
 ```
 
+#### `uint32_t __builtin_riscv_cv_simd_neg_h (uint32_t i)`
+
+There is no `cv.neg.h` instruction, but as a convenience, we provide this builtin using `cv.sub.h`.
+
+_Argument/result mapping:_
+- result: `rD`
+- i: `rs2`
+
+_Generated assembler:_
+
+```gas
+        cv.sub.h  rD,zero,rs2
+```
+
+#### `uint32_t __builtin_riscv_cv_simd_neg_b (uint32_t i)`
+
+There is no `cv.neg.b` instruction, but as a convenience, we provide this builtin using `cv.sub.b`.
+
+_Argument/result mapping:_
+- result: `rD`
+- i: `rs1`
+
+_Generated assembler:_
+
+```gas
+        cv.sub.b  rD,zero,rs2
+```
+
 ### SIMD ALU operations (64-bit)
 
 **Applicability.** 64-bit cores.
@@ -2715,8 +2745,8 @@ At the time of writing the SIMD architecture for 64-bit is not defined, so no bu
 - [`__builtin_riscv_cv_simd_shuffle_sci_b`](#uint32_t-__builtin_riscv_cv_simd_shuffle_sci_b-uint32_t-i-const-uint8_t-flgs)
 - [`__builtin_riscv_cv_simd_shuffle2_h`](#uint32_t-__builtin_riscv_cv_simd_shuffle2_h-uint32_t-i-uint32_t-flgs-uint32_t-k)
 - [`__builtin_riscv_cv_simd_shuffle2_b`](#uint32_t-__builtin_riscv_cv_simd_shuffle2_b-uint32_t-i-uint32_t-flgs-uint32_t-k)
-- [`__builtin_riscv_cv_simd_pack`](#uint32_t-__builtin_riscv_cv_simd_pack-uint32_t-i-uint32_t-j)
-- [`__builtin_riscv_cv_simd_pack_h`](#uint32_t-__builtin_riscv_cv_simd_pack_h-uint32_t-i-uint32_t-j)
+- [`__builtin_riscv_cv_simd_packhi_h`](#uint32_t-__builtin_riscv_cv_simd_packhi_h-uint32_t-i-uint32_t-j)
+- [`__builtin_riscv_cv_simd_packlo_h`](#uint32_t-__builtin_riscv_cv_simd_packlo_h-uint32_t-i-uint32_t-j)
 - [`__builtin_riscv_cv_simd_packhi_b`](#uint32_t-__builtin_riscv_cv_simd_packhi_b-uint32_t-i-uint32_t-j-uint32_t-k)
 - [`__builtin_riscv_cv_simd_packlo_b`](#uint32_t-__builtin_riscv_cv_simd_packlo_b-uint32_t-i-uint32_t-j-uint32_t-k)
 
@@ -2807,21 +2837,7 @@ _Generated assembler:_
         cv.shuffle2.b  rD,rs1,rs2
 ```
 
-#### `uint32_t __builtin_riscv_cv_simd_pack (uint32_t i, uint32_t j)`
-
-_Argument/result mapping:_
-
-- result: `rD`
-- i: `rs1`
-- j: `rs2`
-
-_Generated assembler:_
-
-```gas
-        cv.pack  rD,rs1,rs2
-```
-
-#### `uint32_t __builtin_riscv_cv_simd_pack_h (uint32_t i, uint32_t j)`
+#### `uint32_t __builtin_riscv_cv_simd_packhi_h (uint32_t i, uint32_t j)`
 
 _Argument/result mapping:_
 
@@ -2833,6 +2849,20 @@ _Generated assembler:_
 
 ```gas
         cv.pack.h  rD,rs1,rs2
+```
+
+#### `uint32_t __builtin_riscv_cv_simd_packlo_h (uint32_t i, uint32_t j)`
+
+_Argument/result mapping:_
+
+- result: `rD`
+- i: `rs1`
+- j: `rs2`
+
+_Generated assembler:_
+
+```gas
+        cv.pack  rD,rs1,rs2
 ```
 
 #### `uint32_t __builtin_riscv_cv_simd_packhi_b (uint32_t i, uint32_t j, uint32_t k)`
