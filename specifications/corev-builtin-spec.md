@@ -1,8 +1,12 @@
-### CORE-V builtin names
+# OpenHW specification: CORE-V builtin names
+<!-- SPDL-License-Identifier: CC-BY-SA-4.0 -->
 
 ## Index
 
-- [History](#history)
+- [Front matter](#front-matter)
+  - [Revision history](#revision-history)
+  - [License](#License)
+  - [Copyright](#copyright)
 - [Executive Summary](#executive-summary)
 - [Design principles](#design-principles)
   - [Using vector types](#using-vector-types)
@@ -42,20 +46,31 @@
   - [Event load word builtins (32-bit)](#event-load-word-builtins-32-bit)
   - [Event load word builtins (64-bit)](#event-load-word-builtins-64-bit)
 
-## History
+## Front matter
+
+### Revision history
 
 | Date        | Version | Notes                                                 |
 | :---------- | :------ | :---------------------------------------------------- |
-| 15 Dec 2022 | 0.1     | First draft for review.                               |
+| 27 Mar 2023 | 0.9     | Final draft with small corrections to builtins and    |
+|             |         | official OpenHW template.                             |
+| 23 Feb 2023 | 0.5     | Clean up tables of links, correct bitmanip extract.   |
+| 16 Feb 2023 | 0.4     | Fourth draft incorporating Pascal Gouedo comments.    |
+| 13 Feb 2023 | 0.3     | Third draft after feedback from the GCC               |
+|             |         | implementation team.                                  |
 | 22 Jan 2023 | 0.2     | Second draft after view and Software TG discussion.   |
 |             |         | - naming to match upstream convention;                |
 |             |         | - naming to include the ISA extension name;           |
 |             |         | - pass by reference only when loading a value;        |
 |             |         | - pseudo-overloading to allow 32- and 64-bit support; |
-| 13 Feb 2023 | 0.3     | Third draft after feedback from the GCC               |
-|             |         | implementation team.                                  |
-| 16 Feb 2023 | 0.4     | Fourth draft incorporating Pascal Gouedo comments.    |
-| 23 Feb 2023 | 0.5     | Clean up tables of links, correct bitmanip extract.   |
+| 15 Dec 2022 | 0.1     | First draft for review.                               |
+
+### License
+
+This document is licensed under a Creative Commons Attribution Share Alike 4.0 International license.  See the [full legal code](https://creativecommons.org/licenses/by-sa/4.0/legalcode).
+
+### Copyright
+Copyright (C) 2023 OpenHW Group. You may use, copy, modify, and distribute this work under the terms of the License, subject to the conditions specified in the License.
 
 ## Executive Summary
 
@@ -2131,7 +2146,7 @@ There is no `cv.neg.b` instruction, but as a convenience, we provide this builti
 
 _Argument/result mapping:_
 - result: `rD`
-- i: `rs1`
+- i: `rs2`
 
 _Generated assembler:_
 
