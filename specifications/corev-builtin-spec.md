@@ -4035,9 +4035,9 @@ At the time of writing the bit manipulation architecture for 64-bit is not defin
 
 **Applicability.** 32-bit cores.
 
-- [`__builtin_riscv_cv_elw_elw`](#uint32_t-__builtin_riscv_cv_elw_elw-uint32_t-*loc)
+- [`__builtin_riscv_cv_elw_elw`](#uint32_t-__builtin_riscv_cv_elw_elw-void-*loc)
 
-#### `uint32_t __builtin_riscv_cv_elw_elw (uint32_t *loc)`
+#### `uint32_t __builtin_riscv_cv_elw_elw (void *loc)`
 
 - result: `rD`
 - loc: `Imm(rs1)` (`Imm` and `rs1` determined by the compiler).
