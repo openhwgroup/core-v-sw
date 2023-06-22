@@ -54,6 +54,7 @@
 
 | Date        | Version | Notes                                                 |
 | :---------- | :------ | :---------------------------------------------------- |
+| 28 Jun 2023 | 1.1     | Corrected operand order for Bit Manipulation          |
 | 20 Apr 2023 | 1.0     | Ratified release                                      |
 | 27 Mar 2023 | 0.9     | Final draft with small corrections to builtins and    |
 |             |         | official OpenHW template.                             |
@@ -3854,7 +3855,7 @@ _Generated assembler:_
 
 Case a)
 ```gas
-        cv.extract  rD,rs1,Is2,Is3
+        cv.extract  rD,rs1,Is3,Is2
 ```
 or case b)
 ```gas
@@ -3878,7 +3879,7 @@ _Generated assembler:_
 
 Case a)
 ```gas
-        cv.extractu  rD,rs1,Is2,Is3
+        cv.extractu  rD,rs1,Is3,Is2
 ```
 or case b)
 ```gas
@@ -3902,7 +3903,7 @@ _Generated assembler:_
 
 Case a)
 ```gas
-        cv.insert  rD,rs1,Is2,Is3
+        cv.insert  rD,rs1,Is3,Is2
 ```
 or case b)
 ```gas
@@ -3926,7 +3927,7 @@ _Generated assembler:_
 
 Case a)
 ```gas
-        cv.bclr  rD,rs1,Is2,Is3
+        cv.bclr  rD,rs1,Is3,Is2
 ```
 or case b)
 ```gas
@@ -3950,7 +3951,7 @@ _Generated assembler:_
 
 Case a)
 ```gas
-        cv.bset  rD,rs1,Is2,Is3
+        cv.bset  rD,rs1,Is3,Is2
 ```
 or case b)
 ```gas
@@ -4023,7 +4024,7 @@ _Generated assembler:_
 _Generated assembler: (TBC)_
 
 ```gas
-        cv.bitrev  rD,rs1,Is2,Is3
+        cv.bitrev  rD,rs1,Is3,Is2
 ```
 
 ### PULP bit manipulation builtins (64-bit)
