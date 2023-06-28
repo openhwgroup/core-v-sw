@@ -50,8 +50,11 @@
 
 ### Revision history
 
+**Note.**  Since version 1.0 was ratified, a number of discrepancies have been identified.  Version 1.1 of this specification is in preparation to correct these discrepancies.  The tool chains being developed will track this version 1.1, _not_ version 1.0.
+
 | Date        | Version | Notes                                                 |
 | :---------- | :------ | :---------------------------------------------------- |
+| 20 Apr 2023 | 1.0     | Ratified release                                      |
 | 27 Mar 2023 | 0.9     | Final draft with small corrections to builtins and    |
 |             |         | official OpenHW template.                             |
 | 23 Feb 2023 | 0.5     | Clean up tables of links, correct bitmanip extract.   |
