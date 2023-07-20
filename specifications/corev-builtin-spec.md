@@ -54,6 +54,7 @@
 
 | Date        | Version | Notes                                                 |
 | :---------- | :------ | :---------------------------------------------------- |
+| 19 Jul 2023 | 1.2     | Corrected Unsigned to Signed for SIMD ALU Operation   |
 | 28 Jun 2023 | 1.1     | Corrected operand order for Bit Manipulation          |
 | 20 Apr 2023 | 1.0     | Ratified release                                      |
 | 27 Mar 2023 | 0.9     | Final draft with small corrections to builtins and    |
@@ -987,16 +988,16 @@ It is anticipated that 64-bit cores may wish to define ALU operations by analogy
 - [`__builtin_riscv_cv_simd_sll_sc_b`](#uint32_t-__builtin_riscv_cv_simd_sll_sc_b-uint32_t-i-uint8_t-j)
 - [`__builtin_riscv_cv_simd_or_h`](#uint32_t-__builtin_riscv_cv_simd_or_h-uint32_t-i-uint32_t-j)
 - [`__builtin_riscv_cv_simd_or_b`](#uint32_t-__builtin_riscv_cv_simd_or_b-uint32_t-i-uint32_t-j)
-- [`__builtin_riscv_cv_simd_or_sc_h`](#uint32_t-__builtin_riscv_cv_simd_or_sc_h-uint32_t-i-uint16_t-j)
-- [`__builtin_riscv_cv_simd_or_sc_b`](#uint32_t-__builtin_riscv_cv_simd_or_sc_b-uint32_t-i-uint8_t-j)
+- [`__builtin_riscv_cv_simd_or_sc_h`](#uint32_t-__builtin_riscv_cv_simd_or_sc_h-uint32_t-i-int16_t-j)
+- [`__builtin_riscv_cv_simd_or_sc_b`](#uint32_t-__builtin_riscv_cv_simd_or_sc_b-uint32_t-i-int8_t-j)
 - [`__builtin_riscv_cv_simd_xor_h`](#uint32_t-__builtin_riscv_cv_simd_xor_h-uint32_t-i-uint32_t-j)
 - [`__builtin_riscv_cv_simd_xor_b`](#uint32_t-__builtin_riscv_cv_simd_xor_b-uint32_t-i-uint32_t-j)
-- [`__builtin_riscv_cv_simd_xor_sc_h`](#uint32_t-__builtin_riscv_cv_simd_xor_sc_h-uint32_t-i-uint16_t-j)
-- [`__builtin_riscv_cv_simd_xor_sc_b`](#uint32_t-__builtin_riscv_cv_simd_xor_sc_b-uint32_t-i-uint8_t-j)
+- [`__builtin_riscv_cv_simd_xor_sc_h`](#uint32_t-__builtin_riscv_cv_simd_xor_sc_h-uint32_t-i-int16_t-j)
+- [`__builtin_riscv_cv_simd_xor_sc_b`](#uint32_t-__builtin_riscv_cv_simd_xor_sc_b-uint32_t-i-int8_t-j)
 - [`__builtin_riscv_cv_simd_and_h`](#uint32_t-__builtin_riscv_cv_simd_and_h-uint32_t-i-uint32_t-j)
 - [`__builtin_riscv_cv_simd_and_b`](#uint32_t-__builtin_riscv_cv_simd_and_b-uint32_t-i-uint32_t-j)
-- [`__builtin_riscv_cv_simd_and_sc_h`](#uint32_t-__builtin_riscv_cv_simd_and_sc_h-uint32_t-i-uint16_t-j)
-- [`__builtin_riscv_cv_simd_and_sc_b`](#uint32_t-__builtin_riscv_cv_simd_and_sc_b-uint32_t-i-uint8_t-j)
+- [`__builtin_riscv_cv_simd_and_sc_h`](#uint32_t-__builtin_riscv_cv_simd_and_sc_h-uint32_t-i-int16_t-j)
+- [`__builtin_riscv_cv_simd_and_sc_b`](#uint32_t-__builtin_riscv_cv_simd_and_sc_b-uint32_t-i-int8_t-j)
 - [`__builtin_riscv_cv_simd_abs_h`](#uint32_t-__builtin_riscv_cv_simd_abs_h-uint32_t-i)
 - [`__builtin_riscv_cv_simd_abs_b`](#uint32_t-__builtin_riscv_cv_simd_abs_b-uint32_t-i)
 - [`__builtin_riscv_cv_simd_neg_h`](#uint32_t-__builtin_riscv_cv_simd_neg_h-uint32_t-i)
@@ -1904,14 +1905,14 @@ _Generated assembler:_
         cv.or.b  rD,rs1,rs2
 ```
 
-#### `uint32_t __builtin_riscv_cv_simd_or_sc_h (uint32_t i, uint16_t j)`
+#### `uint32_t __builtin_riscv_cv_simd_or_sc_h (uint32_t i, int16_t j)`
 
 _Argument/result mapping:_
 
-Case a) j is a constant in the range `0 <= j <= 63`
+Case a) j is a constant in the range `-32 <= j <= 31`
 - result: `rD`
 - i: `rs1`
-- j: `Is2` (6-bit unsigned value)
+- j: `Is2` (6-bit signed value)
 
 or case b)
 - result: `rD`
@@ -1929,14 +1930,14 @@ or case b)
         cv.or.sc.h  rD,rs1,rs2
 ```
 
-#### `uint32_t __builtin_riscv_cv_simd_or_sc_b (uint32_t i, uint8_t j)`
+#### `uint32_t __builtin_riscv_cv_simd_or_sc_b (uint32_t i, int8_t j)`
 
 _Argument/result mapping:_
 
-Case a) j is a constant in the range `0 <= j <= 63`
+Case a) j is a constant in the range `-32 <= j <= 31`
 - result: `rD`
 - i: `rs1`
-- j: `Is2` (6-bit unsigned value)
+- j: `Is2` (6-bit signed value)
 
 or case b)
 - result: `rD`
@@ -1980,14 +1981,14 @@ _Generated assembler:_
         cv.xor.b  rD,rs1,rs2
 ```
 
-#### `uint32_t __builtin_riscv_cv_simd_xor_sc_h (uint32_t i, uint16_t j)`
+#### `uint32_t __builtin_riscv_cv_simd_xor_sc_h (uint32_t i, int16_t j)`
 
 _Argument/result mapping:_
 
-Case a) j is a constant in the range `0 <= j <= 63`
+Case a) j is a constant in the range `-32 <= j <= 31`
 - result: `rD`
 - i: `rs1`
-- j: `Is2` (6-bit unsigned value)
+- j: `Is2` (6-bit signed value)
 
 or case b)
 - result: `rD`
@@ -2005,14 +2006,14 @@ or case b)
         cv.xor.sc.h  rD,rs1,rs2
 ```
 
-#### `uint32_t __builtin_riscv_cv_simd_xor_sc_b (uint32_t i, uint8_t j)`
+#### `uint32_t __builtin_riscv_cv_simd_xor_sc_b (uint32_t i, int8_t j)`
 
 _Argument/result mapping:_
 
-Case a) j is a constant in the range `0 <= j <= 63`
+Case a) j is a constant in the range `-32 <= j <= 31`
 - result: `rD`
 - i: `rs1`
-- j: `Is2` (6-bit unsigned value)
+- j: `Is2` (6-bit signed value)
 
 or case b)
 - result: `rD`
@@ -2056,14 +2057,14 @@ _Generated assembler:_
         cv.and.b  rD,rs1,rs2
 ```
 
-#### `uint32_t __builtin_riscv_cv_simd_and_sc_h (uint32_t i, uint16_t j)`
+#### `uint32_t __builtin_riscv_cv_simd_and_sc_h (uint32_t i, int16_t j)`
 
 _Argument/result mapping:_
 
-Case a) j is a constant in the range `0 <= j <= 63`
+Case a) j is a constant in the range `-32 <= j <= 31`
 - result: `rD`
 - i: `rs1`
-- j: `Is2` (6-bit unsigned value)
+- j: `Is2` (6-bit signed value)
 
 or case b)
 - result: `rD`
@@ -2081,14 +2082,14 @@ or case b)
         cv.and.sc.h  rD,rs1,rs2
 ```
 
-#### `uint32_t __builtin_riscv_cv_simd_and_sc_b (uint32_t i, uint8_t j)`
+#### `uint32_t __builtin_riscv_cv_simd_and_sc_b (uint32_t i, int8_t j)`
 
 _Argument/result mapping:_
 
-Case a) j is a constant in the range `0 <= j <= 63`
+Case a) j is a constant in the range `-32 <= j <= 31`
 - result: `rD`
 - i: `rs1`
-- j: `Is2` (6-bit unsigned value)
+- j: `Is2` (6-bit signed value)
 
 or case b)
 - result: `rD`
