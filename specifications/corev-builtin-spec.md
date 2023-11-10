@@ -45,6 +45,7 @@
 - [Listing of event load word builtins (`xcvelw`)](#listing-of-event-load-word-builtins-xcvelw)
   - [Event load word builtins (32-bit)](#event-load-word-builtins-32-bit)
   - [Event load word builtins (64-bit)](#event-load-word-builtins-64-bit)
+- [C API Headers](#c-api-headers)
 
 ## Front matter
 
@@ -4058,3 +4059,49 @@ _Generated assembler:_
 **Applicability.** 64-bit cores.
 
 At the time of writing event load word for 64-bit is not defined, so no builtin functions are specified.
+
+## C API Headers
+
+The C API header files we need for the CORE-V ISA extensions should contain the additions brought by the ISA extensions to the C language: the compiler intrinsics and their default attributes.
+
+As described in the [RISC-V Non-ISA Secifications about the C API headers](https://github.com/riscv-non-isa/riscv-c-api-doc/blob/master/riscv-c-api.md)
+
+- RISC-V header files that enable intrinsics require the prefix `riscv_` (e.g. `riscv_vector.h` or `riscv_crypto.h`).
+- RISC-V specific intrinsics use the common prefix `__riscv_` to avoid namespace collisions.
+- The intrinsic name describes the functional behaviour of the function. In case the functionality can be expressed with a single instruction, the instruction's name (any '.' replaced by '`_`') is the preferred choice.
+  - Note, that intrinsics that are restricted to RISC-V vendor extensions need to include the vendor prefix (as documented in the RISC-V toolchain conventions).
+- If intrinsics are available for multiple data types, then function overloading is preferred over multiple type-specific functions.
+- If an intrinsic function has parameters or return values that reference registers with XLEN bits, then the data type `long` should be used.
+- In case a function is only available for one data type and this type cannot be derived from the function's name, then the type should be appended to the function name, delimited by a `_` character. Typical type postfixes are `32` (32-bit), `i32` (signed 32-bit), `i8m4` (vector register group consisting of 4 signed 8-bit vector registers).
+
+Any compiler specific implementation of the instrinsic must be wrapped into an interface as described above.
+Where these intrinsic functions are simple wrappers to the compiler specific implementations it is encouraged to use compiler attributes where available to inline and remove these wrappers from the call tree.
+
+E.g.:
+```
+#define __DEFAULT_FN_ATTRS __attribute__((__always_inline__, __nodebug__))
+```
+The first attribute makes sure that the wrapper functions are inlined, hence leaving only the enclosed implementation in the compiled code.
+The second attribute removes the possibility to have debug information that still refers to the wrapper. This could create issues when using a debugger. 
+
+RISC-V instrinsics examples:
+
+```
+long __DEFAULT_FN_ATTRS __riscv_clz_32 (long rs) { // Count leading zeroes: clz rd, rs
+  return __builtin_riscv_clz_32(rs);
+}
+
+long __DEFAULT_FN_ATTRS __riscv_clmul (long a, long b) { // Carry-less multiply: clmul rd, rs1, rs2
+  long __res;
+  __asm__("clmul %0,%1,%2\n" : "=r"(__res) : "r"(a), "r"(b) :);
+  return (__res);
+}
+```
+CORE-V instrinsics examples:
+```
+/* As CORE-V intrinsics are vendor specific they must include the vendor prefix in the name */
+
+long __DEFAULT_FN_ATTRS __riscv_cv_alu_addN (long x, long y, uint8_t shft) { // Add and shift right (arithmetical): cv.addN rd, rs1, rs2, Shift
+  return __builtin_riscv_cv_alu_addN (x, y, shft);
+}
+```
