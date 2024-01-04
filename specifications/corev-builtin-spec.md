@@ -49,6 +49,12 @@
 
 ## Front matter
 
+### OpenHW Release Status
+
+This specification is at the "OpenHW - Released" status. 
+
+The ratification vote for Version 1.0 was held in the OpenHW TWG following review in the April, 2023 TWG meeting.
+
 ### Revision history
 
 **Note.**  Since version 1.0 was ratified, a number of discrepancies have been identified.  Version 1.1 of this specification is in preparation to correct these discrepancies.  The tool chains being developed will track this version 1.1, _not_ version 1.0.
