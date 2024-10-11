@@ -495,8 +495,8 @@ There are no builtins for post-indexed and register-indexed memory access.
 **Applicability.** 32-bit cores.
 
 - [`__builtin_abs`](#int-__builtin_abs-int-j)
-- [`__builtin_riscv_cv_alu_slet`](#int-__builtin_riscv_cv_alu_slet-int32_t--i-int32_t--j)
-- [`__builtin_riscv_cv_alu_sletu`](#int-__builtin_riscv_cv_alu_sletu-uint32_t-i-uint32_t-j)
+- [`__builtin_riscv_cv_alu_sle`](#int-__builtin_riscv_cv_alu_sle-int32_t--i-int32_t--j)
+- [`__builtin_riscv_cv_alu_sleu`](#int-__builtin_riscv_cv_alu_sleu-uint32_t-i-uint32_t-j)
 - [`__builtin_riscv_cv_alu_min`](#int32_t-__builtin_riscv_cv_alu_min-int32_t-i-int32_t-j)
 - [`__builtin_riscv_cv_alu_minu`](#uint32_t-__builtin_riscv_cv_alu_minu-uint32_t-i-uint32_t-j)
 - [`__builtin_riscv_cv_alu_max`](#int32_t-__builtin_riscv_cv_alu_max-int32_t-i-int32_t-j)
@@ -531,7 +531,7 @@ _Generated assembler:_
 
 **Note:** This is a standard GCC builtin.
 
-#### `int __builtin_riscv_cv_alu_slet (int32_t  i, int32_t  j)`
+#### `int __builtin_riscv_cv_alu_sle (int32_t  i, int32_t  j)`
 
 _Argument/result mapping:_
 - result `rD`
@@ -540,10 +540,10 @@ _Argument/result mapping:_
 
 _Generated assembler:_
 ```gas
-        cv.slet  rD,rs1,rs2
+        cv.sle  rD,rs1,rs2
 ```
 
-#### `int __builtin_riscv_cv_alu_sletu (uint32_t i, uint32_t j)`
+#### `int __builtin_riscv_cv_alu_sleu (uint32_t i, uint32_t j)`
 
 _Argument/result mapping:_
 - result `rD`
@@ -552,7 +552,7 @@ _Argument/result mapping:_
 
 _Generated assembler:_
 ```gas
-        cv.sletu  rD,rs1,rs2
+        cv.sleu  rD,rs1,rs2
 ```
 
 #### `int32_t __builtin_riscv_cv_alu_min (int32_t i, int32_t j)`
